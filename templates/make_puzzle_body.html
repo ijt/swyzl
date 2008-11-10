@@ -1,0 +1,51 @@
+<div id="make_puzzle_div">
+  <div id="message_div">
+    <div id="message_prompt">
+      Enter a secret message:
+    </div>
+    <textarea id="message" rows="8" onkeyup="onSecretMessageKeyUp();"></textarea>
+  </div>
+  
+  <div id="cipher">
+    <div id="cipher_prompt">
+      Hide a clue in the cipher text (optional):
+    </div>
+    <div id="cipher_text">
+      <span>An encoding interface will appear here when you enter your secret message.</span>
+      {% comment %} The hr prevents the float:left from causing wreckage.{% endcomment %}
+      <hr />
+    </div>
+    <!--
+    <div id="clear_div">
+      <input type="button" name="clear_button" value="Clear" id="clear_button" />
+    </div>
+    -->
+  </div>
+  
+  <div id="clue">
+    <span>Add a clue (optional):</span>
+    <input type="text" name="clue_field" title="For example: A is B." id="clue_field" />      
+  </div>
+
+  <div id="tags_div">
+    <p>
+      <label for="tags">Add tags (optional):</label>
+      <div>
+        <input id="tags" autocomplete="off" size="40" type="text" value="" />        
+      </div>
+    </p>
+    <div class="autocomplete" id="tag_list" style="display:none"></div>
+  </div>
+
+  <div id="buttons">
+    <!--
+    <input type="button" name="save_button" value="Save" id="save_button" />
+    or
+    -->
+    <input type="button" name="publish_button" value="Publish" id="publish_button"
+        onclick="onPublish(swyzl.encodingMap)"/>
+  </div>
+
+  <div id="alert"></div>
+</div>
+

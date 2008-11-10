@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" 
+"http://www.w3.org/TR/html4/loose.dtd">
+<!-- You can run this test by just opening this file in your browser.
+     It doesn't have to be served by a server. -->
+<html>
+<head>
+  <title>script.aculo.us Unit test file</title>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <script src="../media/scriptaculous-js-1.8.1/lib/prototype.js" type="text/javascript"></script>
+  <script src="../media/scriptaculous-js-1.8.1/src/scriptaculous.js?load=effects,dragdrop" type="text/javascript"></script>
+  <script src="../media/scriptaculous-js-1.8.1/src/unittest.js" type="text/javascript"></script>
+  <script src="utils.js" type="text/javascript"></script>
+  <link rel="stylesheet" href="../test.css" type="text/css" />
+</head>
+<body>
+<h1>Swyzl js utils unit test</h1>
+
+<!-- Log output -->
+<div id="testlog"> </div>
+
+<!-- Tests follow -->
+<script type="text/javascript" language="javascript" charset="utf-8">
+// <![CDATA[
+
+  new Test.Unit.Runner({
+    
+    testIsLetter: function() { with(this) {
+      assert(isLetter('a'));
+      assert(isLetter('m'));
+      assert(isLetter('z'));
+      assert(isLetter('A'));
+      assert(isLetter('M'));
+      assert(isLetter('Z'));
+      assert(!isLetter(' '));
+      assert(!isLetter('%'));
+      assert(!isLetter(','));
+      assert(!isLetter('aa'));
+    }},
+
+    testConvertEncodingMapToString: function() { with(this) {
+      assertEqual('', convertEncodingMapToString({}));
+      assertEqual('AB', convertEncodingMapToString({A: 'B'}));
+      assertEqual('ABDC', convertEncodingMapToString({A: 'B', D: 'C'}));
+      assertEqual('ABDCQP',
+                  convertEncodingMapToString({A: 'B', D: 'C', Q: 'P'}));
+    }},
+    
+    testIsAlphaCode: function() { with(this) {
+      assert(isAlphaCode('a'.charCodeAt(0)));
+      assert(isAlphaCode('m'.charCodeAt(0)));
+      assert(isAlphaCode('z'.charCodeAt(0)));
+      assert(isAlphaCode('A'.charCodeAt(0)));
+      assert(isAlphaCode('M'.charCodeAt(0)));
+      assert(isAlphaCode('Z'.charCodeAt(0)));
+      assert(!isAlphaCode(' '.charCodeAt(0)));
+      assert(!isAlphaCode('\b'.charCodeAt(0)));
+      assert(!isAlphaCode('\t'.charCodeAt(0)));
+      assert(!isAlphaCode('.'.charCodeAt(0)));
+    }},
+
+    testListsEqual: function() { with(this) {
+      assert(listsEqual([], []));
+      assert(!listsEqual([1], []));
+      assert(!listsEqual([], [1]));
+      assert(!listsEqual([1], [2]));
+      assert(listsEqual(['a', 'b'], ['a', 'b']));
+    }},
+    
+    testGetConflictLetters: function() { with(this) {
+      assertEqual('{}', Object.toJSON(getConflictLetters({})));
+      assertEqual('{}', Object.toJSON(getConflictLetters({'a': 'b'})));
+      assertEqual('{"a": true}', Object.toJSON(getConflictLetters({'a': 'a', 'b': 'a'})));
+      assert('a' in getConflictLetters({'a': 'a', 'b': 'a'}));
+      assertEqual('{"a": true, "b": true}',
+                  Object.toJSON(getConflictLetters({'a': 'a', 'b': 'a', 'c': 'b', 'd': 'b'})));
+    }},
+
+    testAddAndRemoveClass: function() { with(this) {
+      var elt = document.createElement('div');
+      elt.addClassName('conflict');
+      assertEqual('conflict', elt.getAttribute('class'));
+      elt.addClassName('conflict');
+      assertEqual('conflict', elt.getAttribute('class'));
+      elt.removeClassName('conflict');
+      assertEqual('', elt.getAttribute('class'));
+    }}
+  }, "testlog");
+// ]]>
+</script>
+</body>
+</html>

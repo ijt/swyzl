@@ -1,0 +1,33 @@
+- Write script to clear db and populate it with puzzles.
+- Write puzzle pack-based UI.
+
+- Figure out how to get gcheckout to notify the swyzl back-end of the purchases that have been made.
+  That's going to use http://code.google.com/apis/checkout/developer/index.html#notification_api
+  
+- Add ?tab=make url parameter so we can have the Login to Make take us to the right spot. 
+
+- Keep info on what puzzle the user was playing and which letters were entered,
+  and any info on a partially entered puzzle.
+
+- Charge for an iPhone SDK version
+
+The ajax call should return an obj { html:"...", encodingMap: {} }.
+
+BUG: Login links don't work on IE.
+
+
+Notes:
+
+Here is my sandbox customer account with Google Checkout:
+swyzlbuyer@gmail.com
+swyzlbuy3r
+
+https://checkout.google.com/sell/orders
+http://code.google.com/apis/checkout/developer/index.html#integration_overview
+http://dojotoolkit.org/book/dojo-book-0-9/part-1-life-dojo/quick-installation
+http://code.google.com/appengine/articles/bulkload.html
+
+
+Recently done:
+- Write test of Buy Now button and logging in right after the purchase.
+- Write unit tests for puzzle pack UI.

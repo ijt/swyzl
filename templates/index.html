@@ -1,0 +1,110 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="description" content=
+  "Swyzl is a word puzzle game wherplayPuzzleOfTheDay()e you unscramble a secret message by guessing the hidden letter-to-letter code." />
+  <meta name="keywords" content=
+  "puzzle, word puzzle, crypto, cryptology" />
+  <meta name="viewport" content=
+  "width=device-width; initial-scale=1.0; maximum-scale=2.5; user-scalable=1;" />
+  <link href="media/all.css" rel="stylesheet" type="text/css" />
+  <style type="text/css" media="screen">
+    {% include "puzzle.css" %}
+  </style>
+  <!--[if lt IE 7]><link href="media/ie.css" rel="stylesheet" type="text/css" /><![endif]-->
+  <title>SWYZL</title>
+</head>
+<body onload="init();">
+  <div id="main">
+    <div id="header">
+      <strong class="logo"><a href="javascript:function() {}">SWYZL</a></strong>
+      <ul class="topmenu">
+        <li><a id="login" class="final" href="{{ log_inout_url }}">{{ log_inout_link_text }}</a></li>
+        <li><a href="/about">About SWYZL</a></li>
+        <li><a href="mailto:issac.trotts+swyzl@gmail.com">Feedback</a></li>
+      </ul>
+      <ul class="mainmenu">
+        <li><a id="tab-play" href="javascript:playPuzzleOfTheDay()">Puzzle of the Day</a></li>
+        <li><a id="tab-tips" href="javascript:tips()">Helpful Tips</a></li>
+      </ul>
+    </div>
+    <div class="container">
+      <div id="content">
+
+        {% comment %}
+        <h1>SWYZL name goes here</h1>
+        <div class="stars">
+          <p>difficulty rating:</p>
+          <ul>
+            <!-- Fill these stars using class="active" -->
+            <li><a href="#">&nbsp;</a></li>
+            <li><a href="#">&nbsp;</a></li>
+            <li><a href="#">&nbsp;</a></li>
+            <li><a href="#">&nbsp;</a></li>
+            <li><a href="#">&nbsp;</a></li>
+          </ul>
+        </div>
+        <img alt="" src="images/content-image.jpg" />
+        {% endcomment %}
+
+      </div>
+      <div id="column">
+        <div class="box-top">
+          <div class="box-bottom">
+            <div class="box">
+              Puzzle Packs
+              {% for pack in packs %}
+                <div class="pack">
+                  <div class="thumbnail">
+                    <img src="/media/{{ pack.thumbnail_url_part }}" />
+                  </div>
+                  <div class="description">
+                    <div class="pack_title">
+                      {{ pack.title }}
+                    </div>
+                    <div class="pack_count">
+                      {{ pack.count }} puzzles
+                    </div>
+                  </div>
+                  <div class="table_of_contents">
+                    <a href="{{ pack.introduction_url }}"></a>
+                    {% for puzzle in pack.puzzles %}
+                      <a href="/puzzle/{{ puzzle.key }}">{{ puzzle.name }}</a>
+                    {% endfor %}
+                  </div>
+                </div>
+              {% endfor %}  
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="footer">
+      <ul class="topmenu left">
+        {% comment %}
+        <li><a href="/">Home</a></li>
+        {% endcomment %}
+        <li><a href="javascript:playPuzzleOfTheDay()">Puzzle of the Day</a></li>
+        <li><a href="javascript:tips()">Helpful Tips</a></li>
+      </ul>
+      <ul class="topmenu">
+        <li><a id="login" class="final" href="{{ log_inout_url }}">{{ log_inout_link_text }}</a></li>
+        <li><a href="/about">About SWYZL</a></li>
+        <li><a href="mailto:issac.trotts+swyzl@gmail.com">Feedback</a></li>
+      </ul>
+    </div>
+  </div>
+  <script type="text/javascript" charset="utf-8" src="/media/scriptaculous-js-1.8.1/lib/prototype.js"></script>
+  <script type="text/javascript" charset="utf-8" src="/media/scriptaculous-js-1.8.1/src/scriptaculous.js"></script>
+  <script type="text/javascript" charset="utf-8">
+    // Swyzl's namespace
+    var swyzl = {};
+{% include "index.js" %}
+{% include "puzzle.js" %}
+{% include "utils.js" %}
+  </script>
+</body>
+</html>
+
+

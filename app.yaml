@@ -1,0 +1,23 @@
+application: swyzl
+version: 5
+runtime: python
+api_version: 1
+
+handlers:
+- url: /media/(.*)
+  static_files: media/\1
+  upload: media/(.*)
+
+- url: /images/(.*)
+  static_files: images/\1
+  upload: images/(.*)
+
+- url: /test.*
+  script: gaeunit.py
+
+- url: /load
+  script: myloader.py
+  login: admin
+  
+- url: /.*
+  script: main_view.py
