@@ -28,8 +28,9 @@ class PuzzleViewer(object):
 
 
 def GetDefaultPuzzle():
-  """Returns the first entered puzzle."""
-  return data.models.Puzzle.all().fetch(1)[0]
+  """Returns the first entered puzzle, or None if there is none."""
+  puzzles = data.models.Puzzle.all().fetch(1)
+  return puzzles and puzzles[0] or None
 
 
 def SubmitNewPuzzle(clear_text, map_as_string, tags_string, short_clue):
@@ -158,7 +159,11 @@ class PlayPuzzleOfTheDay(webapp.RequestHandler):
       puzzle = todays_puzzles[0].puzzle
     else:
       puzzle = GetDefaultPuzzle()
-    puzzle_viewer.ShowPuzzle(puzzle, self.request, self.response)
+
+    if puzzle:
+      puzzle_viewer.ShowPuzzle(puzzle, self.request, self.response)
+    else:
+      self.response.out.write('No puzzles yet!')
 
 
 class MakePuzzle(webapp.RequestHandler):
