@@ -230,12 +230,6 @@ class BuyNowExperiment(webapp.RequestHandler):
   def get(self):
     WriteTemplate(self.request, self.response, 'bn.html', {})
 
-
-class TestPage(webapp.RequestHandler):
-  def get(self):
-    WriteTemplate(self.request, self.response, 'tests.html', {})
-
-
 class TestMakePuzzle(webapp.RequestHandler):
   def get(self):
     WriteTemplate(self.request, self.response, 'make_puzzle_test.html', {})
@@ -266,7 +260,6 @@ urls_to_handlers = [('/', MainPage),
                     ('/submit_new_puzzle', SubmitNewPuzzleHandler),
                     ('/tips', TipsPage),
                     ('/test_make_puzzle', TestMakePuzzle),
-                    ('/tests?', TestPage),
                     ('.*', NotFound)]
 application = webapp.WSGIApplication(urls_to_handlers, debug=True)
 puzzle_viewer = PuzzleViewer()
