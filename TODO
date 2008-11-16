@@ -11,6 +11,8 @@
 
 - Charge for an iPhone SDK version
 
+- Show a picture when someone successfully completes the puzzle
+
 The ajax call should return an obj { html:"...", encodingMap: {} }.
 
 BUG: Login links don't work on IE.
