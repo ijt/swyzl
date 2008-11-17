@@ -117,6 +117,13 @@ class InitPuzzleData(webapp.RequestHandler):
     self.response.out.write('Initialized puzzle data.')
 
 
+class LoadPuzzles(webapp.RequestHandler):
+  """Puts some puzzles into the data store."""
+  def get(self):
+    from data import parks1
+    parks1.Save()
+
+
 def GetTagWithName(name):
   tag = data.models.Tag.gql('WHERE text = :1', name).get()
   if not tag:
@@ -269,6 +276,7 @@ urls_to_handlers = [('/', MainPage),
                     ('/done_with_puzzle', DoneWithPuzzle),
                     ('/encrypt', Encrypt),
                     ('/init_puzzle_data', InitPuzzleData),
+                    ('/load_puzzles', LoadPuzzles),
                     ('/make', MakePuzzle),
                     ('/js_for_make', JsForMake),
                     ('/make_puzzle_ui', MakePuzzleUi),  # makes a puzzle ui

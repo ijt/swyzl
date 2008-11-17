@@ -17,8 +17,17 @@ class MockPuzzleViewer(object):
     self.puzzle = puzzle
     self.title = title
 
-class TestWithTwoPuzzlesAndOnePack(unittest.TestCase):
 
+class TestWithNoData(unittest.TestCase):
+  def testLoadPuzzles(self):
+    app = TestApp(main_view.application)
+    response = app.get('/load_puzzles')
+    self.assertEqual('200 OK', response.status)
+    [pack] = models.GetAllPuzzlePacks()
+    self.assertTrue(pack.count >= 1)
+
+
+class TestWithTwoPuzzlesAndOnePack(unittest.TestCase):
   def setUp(self):
     self.puzzle1 = models.Puzzle(
         name='1',
