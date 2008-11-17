@@ -14,7 +14,7 @@ from google.appengine.ext import db
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import template
 
-import data.models
+from data import models
 import utils
 
 
@@ -29,7 +29,7 @@ class PuzzleViewer(object):
 
 def GetDefaultPuzzle():
   """Returns the first entered puzzle, or None if there is none."""
-  puzzles = data.models.Puzzle.all().fetch(1)
+  puzzles = models.Puzzle.all().fetch(1)
   return puzzles and puzzles[0] or None
 
 
@@ -47,7 +47,7 @@ def SubmitNewPuzzle(clear_text, map_as_string, tags_string, short_clue):
   cipher_text = utils.Encrypt(clear_text, encoding_map)
   utils.CheckPuzzle(clear_text, cipher_text)
 
-  puzzle = data.models.Puzzle()
+  puzzle = models.Puzzle()
   puzzle.cipher_text = cipher_text
   puzzle.solution_text = clear_text
   puzzle.author = users.get_current_user()
@@ -58,13 +58,13 @@ def SubmitNewPuzzle(clear_text, map_as_string, tags_string, short_clue):
   tag_texts = set(t.strip().lower() for t in tags_string.split(','))
   tag_texts = [t or "untagged" for t in tag_texts]
   for tag_text in tag_texts:
-    tag_in_db = data.models.Tag.gql('WHERE text = :1', tag_text).get()
+    tag_in_db = models.Tag.gql('WHERE text = :1', tag_text).get()
     if tag_in_db:
       tag_in_db.num_times_used += 1
       tag_in_db.puzzles.append(puzzle.key())
     else:
       # Create a new tag
-      tag_in_db = data.models.Tag(text=tag_text, num_times_used=1,
+      tag_in_db = models.Tag(text=tag_text, num_times_used=1,
                                   puzzles=[puzzle.key()])
     tag_in_db.put()
   
@@ -77,7 +77,7 @@ class MainPage(webapp.RequestHandler):
       # Check to see if the user has auxiliary info for Swyzl, and if not then
       # create it.
       if not user_info:
-        user_info = data.models.UserInfo()
+        user_info = models.UserInfo()
         user_info.user = user
         user_info.put()
       
@@ -91,7 +91,7 @@ class MainPage(webapp.RequestHandler):
   def get(self):
     """Handles the HTTP get request."""
     user, url, url_link_text = self.GetUserInfo()
-    packs = data.models.GetAllPuzzlePacks()
+    packs = models.GetAllPuzzlePacks()
     params = {
       'log_inout_url': url.replace('&', '&amp;'),
       'log_inout_link_text': url_link_text,
@@ -125,14 +125,14 @@ class LoadPuzzles(webapp.RequestHandler):
 
 
 def GetTagWithName(name):
-  tag = data.models.Tag.gql('WHERE text = :1', name).get()
+  tag = models.Tag.gql('WHERE text = :1', name).get()
   if not tag:
     raise ValueError('Could not find tag "%s"' % name)
   return tag
 
 
 def GetInfoForUser(user):
-  return data.models.UserInfo.gql('WHERE user = :1', user).get()
+  return models.UserInfo.gql('WHERE user = :1', user).get()
   
 
 def GetUnsolvedPuzzles(tag, user_info):
@@ -160,7 +160,7 @@ def ExtractTagsWithUnsolvedPuzzles(tags, user_info):
 
 
 def MakePuzzleTitleForDisplay(puzzle):
-  pack = data.models.GetPackForPuzzle(puzzle)
+  pack = models.GetPackForPuzzle(puzzle)
   return '%s: %s' % (pack.title, puzzle.name)
 
 
@@ -176,17 +176,12 @@ class PlayPuzzle(webapp.RequestHandler):
 
 class PlayPuzzleOfTheDay(webapp.RequestHandler):
   def get(self):
-    todays_puzzles = data.models.PuzzleOfTheDay.all().fetch(1)
-    if todays_puzzles:
-      puzzle = todays_puzzles[0].puzzle
-    else:
-      puzzle = GetDefaultPuzzle()
-
-    if puzzle:
+    try:
+      puzzle = models.GetPuzzleOfTheDay()
       title = MakePuzzleTitleForDisplay(puzzle)
       puzzle_viewer.ShowPuzzle(title, puzzle, self.request, self.response)
-    else:
-      self.response.out.write('No puzzles yet!')
+    except models.NotFoundError:
+      self.response.out.write('There\'s no puzzle today. :/')
 
 
 class MakePuzzle(webapp.RequestHandler):
@@ -196,7 +191,7 @@ class MakePuzzle(webapp.RequestHandler):
 
 class JsForMake(webapp.RequestHandler):
   def get(self):
-    tags = data.models.Tag.all()
+    tags = models.Tag.all()
     tag_texts = sorted([tag.text for tag in tags])
     initial_encoding_map = utils.MakeRandomLetterMap()
     params = {
@@ -241,7 +236,7 @@ class DoneWithPuzzle(webapp.RequestHandler):
       # Add this puzzle to the list of puzzles this user has solved.
       user = users.get_current_user()
       if user:
-        user_info = data.models.UserInfo.gql('WHERE user = :1', user).get()
+        user_info = models.UserInfo.gql('WHERE user = :1', user).get()
         user_info.puzzles_solved.append(puzzle.key())
         user_info.put()
       self.response.out.write('Yes!')
@@ -253,6 +248,7 @@ class BuyNowExperiment(webapp.RequestHandler):
   def get(self):
     WriteTemplate(self.request, self.response, 'bn.html', {})
 
+
 class TestMakePuzzle(webapp.RequestHandler):
   def get(self):
     WriteTemplate(self.request, self.response, 'make_puzzle_test.html', {})
@@ -260,8 +256,15 @@ class TestMakePuzzle(webapp.RequestHandler):
 
 class NotFound(webapp.RequestHandler):
   def get(self):
-    self.response.out.write("There's nothing to see here.  How about a "
+    self.response.out.write("There's nothing to see here.  How 'bout a "
                             "<a href='/'>puzzle</a>?")
+
+
+class SetPuzzleOfTheDay(webapp.RequestHandler):
+  def get(self, puzzle_key_str):
+    models.SetPuzzleOfTheDay(db.get(db.Key(puzzle_key_str)))
+    self.response.out.write('Set puzzle of the day to %s' % puzzle_key_str)
+    
 
 def WriteTemplate(request, response, template_name, params, mime_type='text/html'):
   '''Shows a template with some parameters'''
@@ -276,7 +279,6 @@ urls_to_handlers = [('/', MainPage),
                     ('/done_with_puzzle', DoneWithPuzzle),
                     ('/encrypt', Encrypt),
                     ('/init_puzzle_data', InitPuzzleData),
-                    ('/load_puzzles', LoadPuzzles),
                     ('/make', MakePuzzle),
                     ('/js_for_make', JsForMake),
                     ('/make_puzzle_ui', MakePuzzleUi),  # makes a puzzle ui
@@ -284,6 +286,11 @@ urls_to_handlers = [('/', MainPage),
                     ('/puzzle/(.*)', PlayPuzzle),
                     ('/tips', TipsPage),
                     ('/test_make_puzzle', TestMakePuzzle),
+                    
+                    # Admin:
+                    ('/load_puzzles', LoadPuzzles),
+                    ('/set_potd/(.*)', SetPuzzleOfTheDay),
+
                     ('.*', NotFound)]
 application = webapp.WSGIApplication(urls_to_handlers, debug=True)
 puzzle_viewer = PuzzleViewer()

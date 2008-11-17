@@ -26,6 +26,14 @@ class TestWithNoData(unittest.TestCase):
     [pack] = models.GetAllPuzzlePacks()
     self.assertTrue(pack.count >= 1)
 
+  def testPuzzleOfTheDay(self):
+    try:
+      models.GetPuzzleOfTheDay()
+      msg = 'GetPuzzleOfTheDay() should raise an exception if there is none'
+      self.fail(msg)
+    except models.NotFoundError:
+      pass # OK
+
 
 class TestWithTwoPuzzlesAndOnePack(unittest.TestCase):
   def setUp(self):
@@ -45,6 +53,7 @@ class TestWithTwoPuzzlesAndOnePack(unittest.TestCase):
         title="Pack of Joy",
         puzzle_keys=[self.puzzle1.key(), self.puzzle2.key()])
     self.puzzle_pack.put()
+    models.SetPuzzleOfTheDay(self.puzzle2)
     
   def testThatGettingPuzzlesUsingDbGetWorks(self):
     [puzzle1, puzzle2] = [db.get(key) for key in self.puzzle_pack.puzzle_keys]
@@ -57,26 +66,15 @@ class TestWithTwoPuzzlesAndOnePack(unittest.TestCase):
     self.assertEqual('200 OK', response.status)
     self.assertTrue('Puzzle Packs' in response)
 
-  def testPlayPuzzleOfTheDayWhenNoneIsSpecified(self):
-    app = TestApp(main_view.application)
-    main_view.puzzle_viewer = MockPuzzleViewer()
-    default_puzzle = main_view.GetDefaultPuzzle()
-    response = app.get('/potd')
-    self.assertEqual('200 OK', response.status)
-    self.assertTrue(isinstance(default_puzzle, models.Puzzle))
-    self.assertTrue(isinstance(main_view.puzzle_viewer.puzzle, models.Puzzle))
-    self.assertEqual(default_puzzle.key(), main_view.puzzle_viewer.puzzle.key())
-
   def testPlayPuzzleOfTheDay(self):
-    potd = models.PuzzleOfTheDay(puzzle=self.puzzle2)
-    potd.put()
-    self.assertEqual(self.puzzle2.key(), potd.puzzle.key())
+    potd = models.GetPuzzleOfTheDay()
+    self.assertEqual(self.puzzle2.key(), potd.key())
     app = TestApp(main_view.application)
     main_view.puzzle_viewer = MockPuzzleViewer()
     response = app.get('/potd')
     self.assertEqual('200 OK', response.status)
-    self.assertEqual(potd.puzzle.key(), main_view.puzzle_viewer.puzzle.key())
-    self.assertTrue(potd.puzzle.name in main_view.puzzle_viewer.title)
+    self.assertEqual(potd.key(), main_view.puzzle_viewer.puzzle.key())
+    self.assertTrue(potd.name in main_view.puzzle_viewer.title)
 
   def testThatGetAllPuzzlePacksReturnsOurPackAndFilledOutPuzzleObjects(self):
     [pack] = models.GetAllPuzzlePacks()
@@ -95,11 +93,11 @@ class TestWithTwoPuzzlesAndOnePack(unittest.TestCase):
       self.assertEqual('200 OK', response.status)
 
   def testThatPuzzlesGetValidTitlesForDisplay(self):
-    puzzle = self.puzzle1
-    pack = self.puzzle_pack
-    title_for_display = main_view.MakePuzzleTitleForDisplay(puzzle)
-    rx = '.*%s.*%s.*' % (pack.title, puzzle.name)
-    self.assertTrue(re.compile(rx).match(title_for_display))
+    for puzzle in [self.puzzle1, self.puzzle2]:
+      pack = self.puzzle_pack
+      title_for_display = main_view.MakePuzzleTitleForDisplay(puzzle)
+      rx = '.*%s.*%s.*' % (pack.title, puzzle.name)
+      self.assertTrue(re.compile(rx).match(title_for_display))
 
   def testDefaultPage(self):
     def MockWriteTemplate(request, response, filename, params):
@@ -117,3 +115,18 @@ class TestWithTwoPuzzlesAndOnePack(unittest.TestCase):
     self.assertEqual('200 OK', response.status)
     main_view.WriteTemplate = saved_write_template
 
+  def testSetAndGetPuzzleOfTheDay(self):
+    self.assertEqual(self.puzzle2.key(), models.GetPuzzleOfTheDay().key())
+    models.SetPuzzleOfTheDay(self.puzzle1)
+    self.assertEqual(self.puzzle1.key(), models.GetPuzzleOfTheDay().key())
+    models.SetPuzzleOfTheDay(self.puzzle2) 
+    self.assertEqual(self.puzzle2.key(), models.GetPuzzleOfTheDay().key())
+
+  def test_SetPuzzleOfTheDay_FromBrowser(self):
+    app = TestApp(main_view.application)
+    main_view.puzzle_viewer = MockPuzzleViewer()
+    url = '/set_potd/%s' % str(self.puzzle1.key())
+    response = app.get(url)
+    self.assertEqual('200 OK', response.status)
+    self.assertEqual(self.puzzle1.key(), models.GetPuzzleOfTheDay().key())
+    

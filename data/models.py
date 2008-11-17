@@ -3,6 +3,10 @@
 from google.appengine.ext import db
 
 
+class NotFoundError(Exception):
+    pass
+
+
 class PackOfPuzzles(db.Model):
   """Container for the puzzles in one of Julia's books."""
   thumbnail_url_part = db.StringProperty()  # the part after images/
@@ -62,3 +66,18 @@ def GetPackForPuzzle(puzzle):
   msg = 'Could not find a pack containing puzzle %s ' % puzzle.key()
   raise ValueError(msg)
 
+
+def GetPuzzleOfTheDay():
+  """Returns the Puzzle for today."""
+  try:
+    [potd] = PuzzleOfTheDay.all().fetch(1)
+    return db.get(potd.puzzle.key())
+  except ValueError:
+    raise NotFoundError('There is no puzzle of the day')
+
+
+def SetPuzzleOfTheDay(puzzle):
+  for potd in PuzzleOfTheDay.all().fetch(100):
+    potd.delete()
+  potd = PuzzleOfTheDay(puzzle=puzzle.key())
+  potd.put()
