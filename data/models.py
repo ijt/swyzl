@@ -51,3 +51,14 @@ def GetAllPuzzlePacks(max_count=100):
     for puzzle in pack.puzzles:
       puzzle.relative_url = '/puzzle/%s' % puzzle.key()
   return packs
+
+
+def GetPackForPuzzle(puzzle):
+  """Returns the PackOfPuzzles containing a given Puzzle."""
+  packs = PackOfPuzzles.all().fetch(100)
+  for pack in packs:
+    if puzzle.key() in pack.puzzle_keys:
+      return pack
+  msg = 'Could not find a pack containing puzzle %s ' % puzzle.key()
+  raise ValueError(msg)
+

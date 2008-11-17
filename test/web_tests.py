@@ -3,6 +3,7 @@ from data import models
 
 import logging
 import main_view
+import re
 import unittest
 
 from google.appengine.ext import db
@@ -11,8 +12,10 @@ from google.appengine.ext import webapp
 class MockPuzzleViewer(object):
   def __init__(self):
     self.puzzle = None
-  def ShowPuzzle(self, puzzle, request, response):
+    self.title = None
+  def ShowPuzzle(self, title, puzzle, request, response):
     self.puzzle = puzzle
+    self.title = title
 
 class TestWithTwoPuzzlesAndOnePack(unittest.TestCase):
 
@@ -64,6 +67,7 @@ class TestWithTwoPuzzlesAndOnePack(unittest.TestCase):
     response = app.get('/potd')
     self.assertEqual('200 OK', response.status)
     self.assertEqual(potd.puzzle.key(), main_view.puzzle_viewer.puzzle.key())
+    self.assertTrue(potd.puzzle.name in main_view.puzzle_viewer.title)
 
   def testThatGetAllPuzzlePacksReturnsOurPackAndFilledOutPuzzleObjects(self):
     [pack] = models.GetAllPuzzlePacks()
@@ -80,6 +84,13 @@ class TestWithTwoPuzzlesAndOnePack(unittest.TestCase):
     for puzzle in pack.puzzles:
       response = app.get(puzzle1.relative_url)
       self.assertEqual('200 OK', response.status)
+
+  def testThatPuzzlesGetValidTitlesForDisplay(self):
+    puzzle = self.puzzle1
+    pack = self.puzzle_pack
+    title_for_display = main_view.MakePuzzleTitleForDisplay(puzzle)
+    rx = '.*%s.*%s.*' % (pack.title, puzzle.name)
+    self.assertTrue(re.compile(rx).match(title_for_display))
 
   def testDefaultPage(self):
     def MockWriteTemplate(request, response, filename, params):

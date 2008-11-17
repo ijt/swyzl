@@ -19,11 +19,11 @@ import utils
 
 
 class PuzzleViewer(object):
-  def ShowPuzzle(self, puzzle, request, response):
+  def ShowPuzzle(self, title, puzzle, request, response):
     """Renders a puzzle UI to the HTTP response."""
     cipher_words = puzzle.cipher_text.split(' ')
     word_htmls = utils.GenerateWordHtmls(cipher_words)
-    params = {'puzzle': puzzle, 'word_htmls': word_htmls}
+    params = {'puzzle': puzzle, 'word_htmls': word_htmls, 'title': title}
     WriteTemplate(request, response, 'puzzle.html', params)    
 
 
@@ -152,11 +152,17 @@ def ExtractTagsWithUnsolvedPuzzles(tags, user_info):
   return [tag for tag in tags if GetUnsolvedPuzzles(tag, user_info)]
 
 
+def MakePuzzleTitleForDisplay(puzzle):
+  pack = data.models.GetPackForPuzzle(puzzle)
+  return '%s: %s' % (pack.title, puzzle.name)
+
+
 class PlayPuzzle(webapp.RequestHandler):
   def get(self, puzzle_key):
     puzzle = db.get(puzzle_key)
     if puzzle:
-      puzzle_viewer.ShowPuzzle(puzzle, self.request, self.response)
+      title = MakePuzzleTitleForDisplay(puzzle)
+      puzzle_viewer.ShowPuzzle(title, puzzle, self.request, self.response)
     else:
       self.response.out.write('Puzzle not found!')
 
@@ -170,7 +176,8 @@ class PlayPuzzleOfTheDay(webapp.RequestHandler):
       puzzle = GetDefaultPuzzle()
 
     if puzzle:
-      puzzle_viewer.ShowPuzzle(puzzle, self.request, self.response)
+      title = MakePuzzleTitleForDisplay(puzzle)
+      puzzle_viewer.ShowPuzzle(title, puzzle, self.request, self.response)
     else:
       self.response.out.write('No puzzles yet!')
 
