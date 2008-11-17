@@ -20,7 +20,7 @@ def Save():
   parks_pack = models.PackOfPuzzles(
       title="Park Puzzlers - Volume One",
       introduction = intro,
-      puzzles=[],
+      puzzle_keys=[],
       price_cents=100,
       thumbnail_url_part='parks-1.jpg')
 
@@ -47,7 +47,7 @@ def Save():
     puzzle = models.Puzzle(cipher_text=row[0], solution_text=row[1], short_clue=row[2],
                            name=row[3])
     puzzle.put()
-    parks_pack.puzzles.append(puzzle.key())
+    parks_pack.puzzle_keys.append(puzzle.key())
 
   parks_pack.put()
 
