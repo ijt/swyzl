@@ -14,7 +14,7 @@ class MockPuzzleViewer(object):
   def ShowPuzzle(self, puzzle, request, response):
     self.puzzle = puzzle
 
-class IndexTest(unittest.TestCase):
+class TestWithTwoPuzzlesAndOnePack(unittest.TestCase):
 
   def setUp(self):
     self.puzzle1 = models.Puzzle(
@@ -29,6 +29,15 @@ class IndexTest(unittest.TestCase):
         short_clue="S is E")
     self.puzzle1.put()
     self.puzzle2.put()
+    self.puzzle_pack = models.PackOfPuzzles(
+        title="Pack of Joy",
+        puzzle_keys=[self.puzzle1.key(), self.puzzle2.key()])
+    self.puzzle_pack.put()
+    
+  def testThatGettingPuzzlesUsingDbGetWorks(self):
+    [puzzle1, puzzle2] = [db.get(key) for key in self.puzzle_pack.puzzle_keys]
+    self.assertEqual(self.puzzle1.key(), puzzle1.key())
+    self.assertEqual(self.puzzle2.key(), puzzle2.key())
 
   def testDefaultPage(self):
     app = TestApp(main_view.application)
@@ -55,4 +64,28 @@ class IndexTest(unittest.TestCase):
     response = app.get('/potd')
     self.assertEqual('200 OK', response.status)
     self.assertEqual(potd.puzzle.key(), main_view.puzzle_viewer.puzzle.key())
+
+  def testThatGetAllPuzzlePacksReturnsOurPackAndFilledOutPuzzleObjects(self):
+    [pack] = models.GetAllPuzzlePacks()
+    self.assertEqual(self.puzzle_pack.key(), pack.key())
+    self.assertEqual(2, pack.count)
+    [puzzle1, puzzle2] = pack.puzzles
+    self.assertEqual('1', puzzle1.name)
+    self.assertEqual('2', puzzle2.name)
+
+  def testDefaultPage(self):
+    def MockWriteTemplate(request, response, filename, params):
+      [pack] = params['packs']
+      self.assertEqual(2, len(pack.puzzles))
+      self.assertTrue(isinstance(pack.title, (str, unicode)))
+      self.assertTrue(isinstance(pack.count, (int, long)))
+      for puzzle in pack.puzzles:
+        self.assertTrue(isinstance(puzzle.name, (str, unicode)))
+    saved_write_template = main_view.WriteTemplate
+    main_view.WriteTemplate = MockWriteTemplate
+    app = TestApp(main_view.application)
+    main_view.puzzle_viewer = MockPuzzleViewer()
+    response = app.get('/')
+    self.assertEqual('200 OK', response.status)
+    main_view.WriteTemplate = saved_write_template
 

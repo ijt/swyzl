@@ -67,7 +67,7 @@ def SubmitNewPuzzle(clear_text, map_as_string, tags_string, short_clue):
       tag_in_db = data.models.Tag(text=tag_text, num_times_used=1,
                                   puzzles=[puzzle.key()])
     tag_in_db.put()
-
+  
 
 class MainPage(webapp.RequestHandler):
   def GetUserInfo(self):
@@ -91,7 +91,7 @@ class MainPage(webapp.RequestHandler):
   def get(self):
     """Handles the HTTP get request."""
     user, url, url_link_text = self.GetUserInfo()
-    packs = data.models.PackOfPuzzles.all().order('title').fetch(100)
+    packs = data.models.GetAllPuzzlePacks()
     params = {
       'log_inout_url': url.replace('&', '&amp;'),
       'log_inout_link_text': url_link_text,

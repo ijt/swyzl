@@ -12,5 +12,5 @@ for riddle in models.Riddle.all().fetch(1000):
 import space
 import parks1
 
-# Test the puzzles to make sure they're consistent.
+# TODO: Test the puzzles to make sure they're consistent.
 
