@@ -32,9 +32,15 @@ class PuzzleOfTheDay(db.Model):
 
 def GetAllPuzzlePacks(max_count=100):
   """Returns all the puzzle packs with puzzle objects, not just keys.
-  
+     
   TODO(ijt) see if this too CPU intensive.
   
+  Each returned pack object has new fields:
+    puzzles: list of puzzle objects
+    count: how many puzzles
+  
+  Each puzzle object is augmented with a relative_url field.
+
   Args:
     max_count: (optional int) how many packs to get at most
   """
@@ -42,4 +48,6 @@ def GetAllPuzzlePacks(max_count=100):
   for pack in packs:
     pack.puzzles = [db.get(key) for key in pack.puzzle_keys]
     pack.count = len(pack.puzzle_keys)
+    for puzzle in pack.puzzles:
+      puzzle.relative_url = '/puzzle/%s' % puzzle.key()
   return packs

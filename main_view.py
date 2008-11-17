@@ -152,6 +152,15 @@ def ExtractTagsWithUnsolvedPuzzles(tags, user_info):
   return [tag for tag in tags if GetUnsolvedPuzzles(tag, user_info)]
 
 
+class PlayPuzzle(webapp.RequestHandler):
+  def get(self, puzzle_key):
+    puzzle = db.get(puzzle_key)
+    if puzzle:
+      puzzle_viewer.ShowPuzzle(puzzle, self.request, self.response)
+    else:
+      self.response.out.write('Puzzle not found!')
+
+
 class PlayPuzzleOfTheDay(webapp.RequestHandler):
   def get(self):
     todays_puzzles = data.models.PuzzleOfTheDay.all().fetch(1)
@@ -263,7 +272,7 @@ urls_to_handlers = [('/', MainPage),
                     ('/js_for_make', JsForMake),
                     ('/make_puzzle_ui', MakePuzzleUi),  # makes a puzzle ui
                     ('/potd', PlayPuzzleOfTheDay),
-                    ('/submit_new_puzzle', SubmitNewPuzzleHandler),
+                    ('/puzzle/(.*)', PlayPuzzle),
                     ('/tips', TipsPage),
                     ('/test_make_puzzle', TestMakePuzzle),
                     ('/tests?', TestPage),

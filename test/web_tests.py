@@ -73,6 +73,14 @@ class TestWithTwoPuzzlesAndOnePack(unittest.TestCase):
     self.assertEqual('1', puzzle1.name)
     self.assertEqual('2', puzzle2.name)
 
+  def testThatTheLinksToPuzzlesAreValid(self):
+    app = TestApp(main_view.application)
+    [pack] = models.GetAllPuzzlePacks()
+    [puzzle1, puzzle2] = pack.puzzles
+    for puzzle in pack.puzzles:
+      response = app.get(puzzle1.relative_url)
+      self.assertEqual('200 OK', response.status)
+
   def testDefaultPage(self):
     def MockWriteTemplate(request, response, filename, params):
       [pack] = params['packs']

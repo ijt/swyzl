@@ -69,7 +69,7 @@
                   <div class="table_of_contents">
                     <a href="{{ pack.introduction_url }}"></a>
                     {% for puzzle in pack.puzzles %}
-                      <a href="/puzzle/{{ puzzle.key }}">{{ puzzle.name }}</a>
+                      <a href="{{ puzzle.relative_url }}">{{ puzzle.name }}</a>
                     {% endfor %}
                   </div>
                 </div>
