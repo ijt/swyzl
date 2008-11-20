@@ -35,6 +35,13 @@ class PuzzleOfTheDay(db.Model):
   puzzle = db.ReferenceProperty(Puzzle)
 
 
+def AddOrphanPuzzlesToTheirPacks(orphans):
+  for o in orphans:
+    pack = PackOfPuzzles.gql('WHERE title = :1', o.pack_title).get()
+    pack.puzzle_keys.append(o.key())
+    pack.put()
+
+
 def GetAllPuzzlePacks(max_count=100):
   """Returns all the puzzle packs with puzzle objects, not just keys.
      
