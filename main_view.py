@@ -14,7 +14,7 @@ from google.appengine.ext import db
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import template
 
-from data import models
+import swyzl_models as models
 import utils
 
 

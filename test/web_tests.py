@@ -1,5 +1,5 @@
 from webtest import TestApp
-from data import models 
+import swyzl_models as models
 
 import logging
 import main_view

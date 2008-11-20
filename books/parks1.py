@@ -6,7 +6,7 @@
 # if these puzzles are not already in the data store.
 #
 
-import models
+import swyzl_models as models
 
 def Save():
   intro = ('In these cryptograms, each letter represents another '
