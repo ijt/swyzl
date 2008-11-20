@@ -5,7 +5,8 @@ from google.appengine.ext import db
 
 def Main():
   orphans = models.GetOrphanPuzzles()
-  models.AddOrphanPuzzlesToTheirPacks(orphans)
+  num_added = models.AddOrphanPuzzlesToTheirPacks(orphans)
+  print '%s of %s orphaned puzzles found new homes' % (num_added, len(orphans))
 
 
 if __name__ == '__main__':

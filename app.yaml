@@ -23,7 +23,7 @@ handlers:
 # Adds puzzles to their named packs if they aren't already in them.
 - url: /orphans
   script: orphan_help.py
-  login: admin
+  # login: admin
   
 - url: /.*
   script: main_view.py

@@ -135,14 +135,6 @@ def GetInfoForUser(user):
   return models.UserInfo.gql('WHERE user = :1', user).get()
   
 
-def GetUnsolvedPuzzles(tag, user_info):
-  """Returns the puzzles with some tag that the user hasn't solved yet."""
-  if user_info:
-    return [p for p in tag.puzzles if p not in user_info.puzzles_solved]
-  else:
-    return tag.puzzles
-
-
 class MakePuzzleUi(webapp.RequestHandler):
   def post(self):
     puzzle_text = self.request.get('content')
@@ -153,10 +145,6 @@ class MakePuzzleUi(webapp.RequestHandler):
     json = simplejson.dumps(dict(html=html, encodingMap=encoding_map))
     self.response.headers['Content-Type'] = 'text/html'
     self.response.out.write(json)
-
-
-def ExtractTagsWithUnsolvedPuzzles(tags, user_info):
-  return [tag for tag in tags if GetUnsolvedPuzzles(tag, user_info)]
 
 
 def MakePuzzleTitleForDisplay(puzzle):
@@ -237,7 +225,7 @@ class DoneWithPuzzle(webapp.RequestHandler):
       user = users.get_current_user()
       if user:
         user_info = models.UserInfo.gql('WHERE user = :1', user).get()
-        user_info.puzzles_solved.append(puzzle.key())
+        user_info.solved_puzzle_keys.append(puzzle.key())
         user_info.put()
       self.response.out.write('Yes!')
     else:
@@ -288,7 +276,7 @@ urls_to_handlers = [('/', MainPage),
                     ('/test_make_puzzle', TestMakePuzzle),
                     
                     # Admin:
-                    ('/load_puzzles', LoadPuzzles),
+                    ('/load_parks', LoadPuzzles),
                     ('/set_potd/(.*)', SetPuzzleOfTheDay),
 
                     ('.*', NotFound)]
