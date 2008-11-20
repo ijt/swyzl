@@ -21,6 +21,7 @@ class Puzzle(db.Model):
   cipher_text = db.StringProperty(multiline=True)
   solution_text = db.StringProperty(multiline=True)
   short_clue = db.StringProperty()  # Such as "d is b"
+  pack_title = db.StringProperty()  # Makes bulk upload easier to implement
 
 
 class UserInfo(db.Model):
@@ -55,6 +56,16 @@ def GetAllPuzzlePacks(max_count=100):
     for puzzle in pack.puzzles:
       puzzle.relative_url = '/puzzle/%s' % puzzle.key()
   return packs
+
+
+def GetOrphanPuzzles():
+  orphans = []
+  for puzzle in Puzzle.all().fetch(1000):
+    try:
+      _ = GetPackForPuzzle(puzzle)
+    except ValueError:
+      orphans.append(puzzle)
+  return orphans
 
 
 def GetPackForPuzzle(puzzle):

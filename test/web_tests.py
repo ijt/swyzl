@@ -130,3 +130,6 @@ class TestWithTwoPuzzlesAndOnePack(unittest.TestCase):
     self.assertEqual('200 OK', response.status)
     self.assertEqual(self.puzzle1.key(), models.GetPuzzleOfTheDay().key())
     
+  def testThat_PuzzlesLoader_Exists(self):
+    import puzzle_loading
+    puzzles_loader = puzzle_loading.PuzzlesLoader()

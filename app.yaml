@@ -15,8 +15,14 @@ handlers:
 - url: /test.*
   script: gaeunit.py
 
-- url: /load
-  script: myloader.py
+- url: /load_puzzles
+  script: puzzle_loading.py
+  # TODO(ijt): This is supposed to be login: admin, but bulkloader.py
+  # fails on that.
+
+# Adds puzzles to their named packs if they aren't already in them.
+- url: /orphans
+  script: orphan_help.py
   login: admin
   
 - url: /.*

@@ -120,7 +120,7 @@ class InitPuzzleData(webapp.RequestHandler):
 class LoadPuzzles(webapp.RequestHandler):
   """Puts some puzzles into the data store."""
   def get(self):
-    from data import parks1
+    from books import parks1
     parks1.Save()
 
 
