@@ -1,3 +1,8 @@
+Write a converter from pack files to CSV.
+Convert and upload the country capital cryptos.
+Deploy
+Send the new data to the server.
+
 - Write script to clear db and populate it with puzzles.
 - Write puzzle pack-based UI.
 
@@ -31,5 +36,4 @@ http://code.google.com/appengine/articles/bulkload.html
 
 
 Recently done:
-- Write test of Buy Now button and logging in right after the purchase.
-- Write unit tests for puzzle pack UI.
+- Try uploading a puzzle with a comma. You have to put quotes around the fields.
