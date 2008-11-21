@@ -1,3 +1,10 @@
 Some puzzle,ABC,DEF,A is D.,Park Puzzlers - Volume One
 A puzzle with a comma,"ABC,D","EFG,H",A is D.,Park Puzzlers - Volume One
 A puzzle with a comma and some quotes,"A""B""C,D","E""F""G,H",A is D.,Park Puzzlers - Volume One
+,,,,
+A "name" with quotes,b,c,d,e
+A name with quotes at "end",b,c,d,e
+"A name" with quotes at beginning,b,c,d,e
+"""Another name"" with quotes at beginning",b,c,d,e
+"""A name with quotes at beginning and end""",b,c,d,e
+

@@ -32,20 +32,39 @@ def ParseString(string):
       raise ValueError('Error on puzzle %s: %s' % (puzzle['name'], str(e)))
     result.append(puzzle)
   return result
-  
+
+
+def EscapeCsvField(field):
+  if field.find(',') != -1 or field.startswith('"'):
+    field = field.replace('"', '""')  # Replace double quotes with pairs of them.
+    field = '"%s"' % field
+  return field
+
+
+def ConvertPuzzleToCsvLine(puzzle, pack_title):
+  """Converts a dict representing a puzzle to a string of CSV."""
+  puzzle = puzzle.copy()
+  puzzle.update(pack_title=pack_title)
+  for key, val in puzzle.iteritems():
+    puzzle[key] = EscapeCsvField(val)
+  return ('%(name)s,%(cipher_text)s,%(solution_text)s,'
+          '%(short_clue)s,%(pack_title)s' % puzzle)
+
 
 if __name__ == '__main__':
   try:
     filename = sys.argv[1]
+    pack_title = sys.argv[2]
   except:
-    print 'Usage: parse_puzzle_pack.py filename'
+    print 'Usage: parse_puzzle_pack.py filename pack_title'
     sys.exit(1)
   contents = open(filename).read()
   try:
     puzzles = ParseString(contents)
+    for puzzle in puzzles:
+      print ConvertPuzzleToCsvLine(puzzle, pack_title)
   except ValueError, e:
     print str(e)
     sys.exit(1)
-  print 'Successfully checked %s puzzles.' % len(puzzles)
 
 

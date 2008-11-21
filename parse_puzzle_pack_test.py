@@ -67,5 +67,54 @@ class TestCheckPuzzlePack(unittest.TestCase):
     except ValueError, e:
       self.assertTrue('puzzle 1' in str(e).lower())
 
+  def testConvertPuzzleToCsvLine_EmptyCase(self):
+    puzzle = {'name': '',
+              'short_clue': '',
+              'solution_text': '',
+              'cipher_text': ''}
+    csv = parse_puzzle_pack.ConvertPuzzleToCsvLine(puzzle=puzzle,
+                                                   pack_title='')
+    expected = ',,,,'
+    self.assertEqual(expected, csv)
+
+  def testConvertPuzzleToCsvLine(self):
+    puzzle = {'name': 'Name',
+              'short_clue': 'Clue',
+              'solution_text': 'Soln',
+              'cipher_text': 'Cipher'}
+    csv = parse_puzzle_pack.ConvertPuzzleToCsvLine(puzzle=puzzle,
+                                                   pack_title='Pack')
+    expected = 'Name,Cipher,Soln,Clue,Pack'
+    self.assertEqual(expected, csv)
+
+  def testConvertPuzzleToCsvLineWithQuotesAndCommas(self):
+    str_for_quoting = 'a,b'
+    puzzle = {'name': str_for_quoting,
+              'short_clue': str_for_quoting,
+              'solution_text': str_for_quoting,
+              'cipher_text': str_for_quoting}
+    csv = parse_puzzle_pack.ConvertPuzzleToCsvLine(puzzle=puzzle,
+                                                   pack_title=str_for_quoting)
+    expected = '"a,b","a,b","a,b","a,b","a,b"'
+    self.assertEqual(expected, csv)
+
+  def testEscapeCsvFieldOnStringContainingInnerQuotes(self):
+    self.assertEqual('a"b"c', parse_puzzle_pack.EscapeCsvField('a"b"c'))
+
+  def testEscapeCsvFieldOnStringContainingQuoteAtEnd(self):
+    # This does not require surrounding the whole string in quotes.
+    self.assertEqual('a"b"', parse_puzzle_pack.EscapeCsvField('a"b"'))
+
+  def testEscapeCsvFieldOnStringContainingQuoteAtBeginning(self):
+    # This requires surrounding the whole string in quotes.
+    self.assertEqual('"""a""b"', parse_puzzle_pack.EscapeCsvField('"a"b'))
+    
+  def testEscapeCsvFieldOnStringContainingQuotesAtBeginningAndEnd(self):
+    self.assertEqual('"""a"""', parse_puzzle_pack.EscapeCsvField('"a"'))
+
+  def testEscapeCsvFieldOnStringContainingCommas(self):
+    self.assertEqual('"a,b, c"', parse_puzzle_pack.EscapeCsvField('a,b, c'))
+     
+
 if __name__ == '__main__':
   unittest.main()
