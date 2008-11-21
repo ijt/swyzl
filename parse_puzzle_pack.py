@@ -1,4 +1,5 @@
 #!/usr/bin/env python2.4
+import re
 import sys
 import utils
 
@@ -14,6 +15,8 @@ def EnsurePeriod(s):
 def ParseString(string):
   """Extracts puzzles from a string."""
   lines = string.split('\n')
+  comment_rx = re.compile('#.*')
+  lines = [comment_rx.sub('', line) for line in lines]  # remove comments
   lines = [line.strip() for line in lines]  # remove whitespace
   lines = [line for line in lines if line]  # remove blank lines
   result = []
@@ -51,7 +54,16 @@ def ConvertPuzzleToCsvLine(puzzle, pack_title):
           '%(short_clue)s,%(pack_title)s' % puzzle)
 
 
+def SwapSolutionAndCipher(puzzle):
+  puzzle = puzzle.copy()
+  old_soln = puzzle['solution_text']
+  puzzle['solution_text'] = puzzle['cipher_text']
+  puzzle['cipher_text'] = old_soln
+  return puzzle
+
+
 if __name__ == '__main__':
+  opts, args = 
   try:
     filename = sys.argv[1]
     pack_title = sys.argv[2]

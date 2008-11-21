@@ -23,11 +23,14 @@ class TestCheckPuzzlePack(unittest.TestCase):
 
   def testOnTwoGoodPuzzles(self):
     file_string = '''
+    # This is a comment.
     
     1
     Z is E.
     I'm feeling puzzled. 
     J'n gzzmjoh qvaamze.
+
+    # Here's another comment.
         
     2
     H is G
@@ -114,7 +117,14 @@ class TestCheckPuzzlePack(unittest.TestCase):
 
   def testEscapeCsvFieldOnStringContainingCommas(self):
     self.assertEqual('"a,b, c"', parse_puzzle_pack.EscapeCsvField('a,b, c'))
-     
+
+  def testSwapSolutionAndCipher(self):
+    puzzle_frag = {'solution_text': 'cipher_oops_haha',
+                   'cipher_text': 'soln_oops_haha'}
+    puzzle2 = parse_puzzle_pack.SwapSolutionAndCipher(puzzle_frag)
+    self.assertEqual('soln_oops_haha', puzzle2['solution_text'])
+    self.assertEqual('cipher_oops_haha', puzzle2['cipher_text'])
+
 
 if __name__ == '__main__':
   unittest.main()
