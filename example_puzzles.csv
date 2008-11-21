@@ -1,3 +1,3 @@
 Some puzzle,ABC,DEF,A is D.,Park Puzzlers - Volume One
-Some puzzle,"ABC,D","EFG\,H",A is D.,Park Puzzlers - Volume One
-Some puzzle,"A\"B\"C,D","E\"F\"G\,H",A is D.,Park Puzzlers - Volume One
+A puzzle with a comma,"ABC,D","EFG,H",A is D.,Park Puzzlers - Volume One
+A puzzle with a comma and some quotes,"A""B""C,D","E""F""G,H",A is D.,Park Puzzlers - Volume One
