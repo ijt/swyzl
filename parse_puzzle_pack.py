@@ -1,4 +1,5 @@
 #!/usr/bin/env python2.4
+import getopt
 import re
 import sys
 import utils
@@ -62,21 +63,41 @@ def SwapSolutionAndCipher(puzzle):
   return puzzle
 
 
-if __name__ == '__main__':
-  opts, args = 
+def Main(argv):
+  usage = ('Usage: [options] parse_puzzle_pack.py filename pack_title\n'
+           'Options:\n'
+           ' -s: swap cipher and solution lines if you mixed them up :)')
   try:
-    filename = sys.argv[1]
-    pack_title = sys.argv[2]
+    opts, args = getopt.getopt(argv, "s")
   except:
-    print 'Usage: parse_puzzle_pack.py filename pack_title'
+    print usage
     sys.exit(1)
+
+  should_swap = False
+  for opt, arg in opts:
+    if opt == '-s':
+      should_swap = True
+
+  try:
+    filename = args[0]
+    pack_title = args[1]
+  except:
+    print usage
+    sys.exit(2)
+
   contents = open(filename).read()
   try:
     puzzles = ParseString(contents)
     for puzzle in puzzles:
+      if should_swap:
+        puzzle = SwapSolutionAndCipher(puzzle)
       print ConvertPuzzleToCsvLine(puzzle, pack_title)
   except ValueError, e:
     print str(e)
     sys.exit(1)
+
+
+if __name__ == '__main__':
+  Main(sys.argv[1:])
 
 
