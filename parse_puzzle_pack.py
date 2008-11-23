@@ -56,11 +56,26 @@ def ConvertPuzzleToCsvLine(puzzle, pack_title):
 
 
 def SwapSolutionAndCipher(puzzle):
+  """Interchanges the solution_text and cipher_text fields of a puzzle dict.
+  
+  This function was written to help with a file where ijt accidentally
+  transposed the solution and cipher lines.
+  """
   puzzle = puzzle.copy()
   old_soln = puzzle['solution_text']
   puzzle['solution_text'] = puzzle['cipher_text']
   puzzle['cipher_text'] = old_soln
   return puzzle
+
+
+def PutPuzzlesIntoPackFormat(puzzles):
+  lines = []
+  for puzzle in puzzles:
+    lines.append(puzzle['name'])
+    lines.append(puzzle['short_clue'])
+    lines.append(puzzle['solution_text'])
+    lines.append(puzzle['cipher_text'])
+  return lines
 
 
 def Main(argv):

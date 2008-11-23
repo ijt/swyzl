@@ -2,7 +2,7 @@
 import parse_puzzle_pack
 import unittest
 
-class TestCheckPuzzlePack(unittest.TestCase):
+class ParsePuzzlePackTestCase(unittest.TestCase):
   def testEmptyCase(self):
     self.assertEqual([], parse_puzzle_pack.ParseString(''))
 
@@ -80,16 +80,6 @@ class TestCheckPuzzlePack(unittest.TestCase):
     expected = ',,,,'
     self.assertEqual(expected, csv)
 
-  def testConvertPuzzleToCsvLine(self):
-    puzzle = {'name': 'Name',
-              'short_clue': 'Clue',
-              'solution_text': 'Soln',
-              'cipher_text': 'Cipher'}
-    csv = parse_puzzle_pack.ConvertPuzzleToCsvLine(puzzle=puzzle,
-                                                   pack_title='Pack')
-    expected = 'Name,Cipher,Soln,Clue,Pack'
-    self.assertEqual(expected, csv)
-
   def testConvertPuzzleToCsvLineWithQuotesAndCommas(self):
     str_for_quoting = 'a,b'
     puzzle = {'name': str_for_quoting,
@@ -124,6 +114,28 @@ class TestCheckPuzzlePack(unittest.TestCase):
     puzzle2 = parse_puzzle_pack.SwapSolutionAndCipher(puzzle_frag)
     self.assertEqual('soln_oops_haha', puzzle2['solution_text'])
     self.assertEqual('cipher_oops_haha', puzzle2['cipher_text'])
+
+  def testPutPuzzlesIntoPackFormat(self):
+    pack_lines = parse_puzzle_pack.PutPuzzlesIntoPackFormat([])
+    self.assertEqual([], pack_lines)
+    
+
+class TestCaseWithFakePuzzle(unittest.TestCase):
+  def setUp(self):
+    self.puzzle = {'name': 'Name',
+                   'short_clue': 'Clue',
+                   'solution_text': 'Soln',
+                   'cipher_text': 'Cipher'}    
+     
+  def testPutPuzzlesIntoPackFormat(self):
+    pack_lines = parse_puzzle_pack.PutPuzzlesIntoPackFormat([self.puzzle])
+    self.assertEqual(['Name', 'Clue', 'Soln', 'Cipher'], pack_lines)
+
+  def testConvertPuzzleToCsvLine(self):
+    csv = parse_puzzle_pack.ConvertPuzzleToCsvLine(puzzle=self.puzzle,
+                                                   pack_title='Pack')
+    expected = 'Name,Cipher,Soln,Clue,Pack'
+    self.assertEqual(expected, csv)
 
 
 if __name__ == '__main__':
