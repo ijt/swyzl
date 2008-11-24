@@ -53,14 +53,14 @@ class TestWithTwoPuzzlesAndOnePack(unittest.TestCase):
     self.puzzle2.put()
     self.puzzle_pack = models.PackOfPuzzles(
         title=pack_title,
-        puzzle_keys=[self.puzzle1.key(), self.puzzle2.key()])
+        puzzle_keys=[self.puzzle2.key(), self.puzzle1.key()])
     self.puzzle_pack.put()
     models.SetPuzzleOfTheDay(self.puzzle2)
     
   def testThatGettingPuzzlesUsingDbGetWorks(self):
     [puzzle1, puzzle2] = [db.get(key) for key in self.puzzle_pack.puzzle_keys]
-    self.assertEqual(self.puzzle1.key(), puzzle1.key())
-    self.assertEqual(self.puzzle2.key(), puzzle2.key())
+    self.assertEqual(self.puzzle2.key(), puzzle1.key())
+    self.assertEqual(self.puzzle1.key(), puzzle2.key())
 
   def testDefaultPage(self):
     app = TestApp(main_view.application)

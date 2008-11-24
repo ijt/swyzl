@@ -9,7 +9,7 @@ class NotFoundError(Exception):
 
 
 class PackOfPuzzles(db.Model):
-  """Container for the puzzles in one of Julia's books."""
+  """Container for all the puzzles in one of Julia's books."""
   thumbnail_url_part = db.StringProperty()  # the part after images/
   title = db.StringProperty()
   puzzle_keys = db.ListProperty(db.Key)  # fixme: should be puzzle_keys
@@ -18,7 +18,9 @@ class PackOfPuzzles(db.Model):
 
 
 class Puzzle(db.Model):
-  name = db.StringProperty()  # Usually a number such as 8
+  # TODO(ijt): Include the encryption map here and add code to
+  # generate it offline.
+  name = db.StringProperty()  # Index of the puzzle in its book
   cipher_text = db.StringProperty(multiline=True)
   solution_text = db.StringProperty(multiline=True)
   short_clue = db.StringProperty()  # Such as "d is b"
@@ -47,6 +49,7 @@ def AddOrphanPuzzlesToTheirPacks(orphans):
       num_added += 1
   return num_added
 
+
 def GetAllPuzzlePacks(max_count=100):
   """Returns all the puzzle packs with puzzle objects, not just keys.
      
@@ -64,6 +67,7 @@ def GetAllPuzzlePacks(max_count=100):
   packs = PackOfPuzzles.all().order('title').fetch(max_count)
   for pack in packs:
     pack.puzzles = [db.get(key) for key in pack.puzzle_keys]
+    pack.puzzles = sorted(pack.puzzles, key=lambda p: int(p.name))
     pack.count = len(pack.puzzle_keys)
     for puzzle in pack.puzzles:
       puzzle.relative_url = '/puzzle/%s' % puzzle.key()
