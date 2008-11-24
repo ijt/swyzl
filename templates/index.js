@@ -9,20 +9,7 @@ function setContentTo(url) {
   setActiveTab(null);
 }
 
-function makeAllLinksDoAjaxCallsAndPutTheResultsIntoTheContentDiv() {
-  var links = getNonJavaScriptLinks();
-  for (var i = 0; i < links.length; i++) {
-    var link = links[i];
-    var klass = link.getAttribute('class');
-    if (!(klass && klass.match(/\bfinal\b/))) {
-      var newHref = 'javascript:setContentTo("' + link.href + '");';
-      link.href = newHref;
-    }
-  }
-}
-
 function init() {
-  makeAllLinksDoAjaxCallsAndPutTheResultsIntoTheContentDiv();
   playPuzzleOfTheDay();
 }
 

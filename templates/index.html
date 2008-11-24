@@ -21,7 +21,7 @@
       <strong class="logo"><a href="javascript:function() {}">SWYZL</a></strong>
       <ul class="topmenu">
         <li><a id="login" class="final" href="{{ log_inout_url }}">{{ log_inout_link_text }}</a></li>
-        <li><a href="/about">About SWYZL</a></li>
+        <li><a href="javascript:setContentTo('/about')">About SWYZL</a></li>
         <li><a href="mailto:issac.trotts+swyzl@gmail.com">Feedback</a></li>
       </ul>
       <ul class="mainmenu">
@@ -31,23 +31,6 @@
     </div>
     <div class="container">
       <div id="content">
-
-        {% comment %}
-        <h1>SWYZL name goes here</h1>
-        <div class="stars">
-          <p>difficulty rating:</p>
-          <ul>
-            <!-- Fill these stars using class="active" -->
-            <li><a href="#">&nbsp;</a></li>
-            <li><a href="#">&nbsp;</a></li>
-            <li><a href="#">&nbsp;</a></li>
-            <li><a href="#">&nbsp;</a></li>
-            <li><a href="#">&nbsp;</a></li>
-          </ul>
-        </div>
-        <img alt="" src="images/content-image.jpg" />
-        {% endcomment %}
-
       </div>
       <div id="column">
         <div class="box-top">
@@ -67,9 +50,9 @@
                     </div>
                   </div>
                   <div class="table_of_contents">
-                    <a href="{{ pack.introduction_url }}"></a>
+                    <a href="javascript:setContentTo('{{ pack.introduction_url }}')"></a>
                     {% for puzzle in pack.puzzles %}
-                      <a href="{{ puzzle.relative_url }}">{{ puzzle.name }}</a>
+                      <a href="javascript:setContentTo({{ puzzle.relative_url }})">{{ puzzle.name }}</a>
                     {% endfor %}
                   </div>
                 </div>
@@ -82,14 +65,14 @@
     <div id="footer">
       <ul class="topmenu left">
         {% comment %}
-        <li><a href="/">Home</a></li>
+        <li><a href="javascript:setContentTo('/')">Home</a></li>
         {% endcomment %}
         <li><a href="javascript:playPuzzleOfTheDay()">Puzzle of the Day</a></li>
         <li><a href="javascript:tips()">Helpful Tips</a></li>
       </ul>
       <ul class="topmenu">
         <li><a id="login" class="final" href="{{ log_inout_url }}">{{ log_inout_link_text }}</a></li>
-        <li><a href="/about">About SWYZL</a></li>
+        <li><a href="javascript:setContentTo('/about')">About SWYZL</a></li>
         <li><a href="mailto:issac.trotts+swyzl@gmail.com">Feedback</a></li>
       </ul>
     </div>
