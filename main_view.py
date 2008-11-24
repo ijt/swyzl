@@ -276,7 +276,6 @@ urls_to_handlers = [('/', MainPage),
                     ('/test_make_puzzle', TestMakePuzzle),
                     
                     # Admin:
-                    ('/load_parks', LoadPuzzles),
                     ('/set_potd/(.*)', SetPuzzleOfTheDay),
 
                     ('.*', NotFound)]

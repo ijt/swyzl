@@ -19,13 +19,6 @@ class MockPuzzleViewer(object):
 
 
 class TestWithNoData(unittest.TestCase):
-  def testLoadPuzzles(self):
-    app = TestApp(main_view.application)
-    response = app.get('/load_parks')
-    self.assertEqual('200 OK', response.status)
-    [pack] = models.GetAllPuzzlePacks()
-    self.assertTrue(pack.count >= 1)
-
   def testPuzzleOfTheDay(self):
     try:
       models.GetPuzzleOfTheDay()
