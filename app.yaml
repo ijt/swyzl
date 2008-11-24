@@ -15,10 +15,15 @@ handlers:
 - url: /test.*
   script: gaeunit.py
 
+# This URL is for use with the CSV bulk uploader.
+# http://code.google.com/appengine/articles/bulkload.html
 - url: /load_puzzles
   script: puzzle_loading.py
   # TODO(ijt): This is supposed to be login: admin, but bulkloader.py
   # fails on that.
+
+- url: /load_pack_descriptions
+  script: pack_description_loading.py
 
 # Adds puzzles to their named packs if they aren't already in them.
 - url: /orphans

@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# TODO(ijt): change name to datastore.py
 
 from google.appengine.ext import db
 

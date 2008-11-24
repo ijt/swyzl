@@ -6,9 +6,22 @@ import unittest
 from google.appengine.ext import db
 
 
+class MockOutfile(object):
+  """Mock for sys.stdout and other output streams."""
+
+  def __init__(self):
+    self.output = ''
+
+  def write(self, str):
+    self.output += str
+
+
 class OrphansEmptyTestCase(unittest.TestCase):
   def testMain(self):
-    orphan_help.Main()
+    mock_outfile = MockOutfile()
+    orphan_help.Main(mock_outfile)
+    self.assertEquals('0 of 0 orphaned puzzles found new homes',
+                      mock_outfile.output)
 
   def testGetOrphans(self):
     self.assertEqual(0, len(models.GetOrphanPuzzles()))
@@ -46,7 +59,10 @@ class OrphansTestCase(unittest.TestCase):
 
   def testMain(self):
     self.assertEqual(1, len(self.pack.puzzle_keys))
-    orphan_help.Main()
+    mock_outfile = MockOutfile()
+    orphan_help.Main(mock_outfile)
     self.pack = models.PackOfPuzzles.all().get()
     self.assertEqual(2, len(self.pack.puzzle_keys))
     self.assertEqual(self.orphan_puzzle.key(), self.pack.puzzle_keys[1])
+    self.assertEqual('1 of 2 orphaned puzzles found new homes',
+                     mock_outfile.output)

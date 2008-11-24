@@ -1,5 +1,5 @@
-Write a converter from pack files to CSV.
-Convert and upload the country capital cryptos.
+Convert and upload the country capital cryptos to localhost
+Add a file with the puzzle pack header info: packs/headers.py
 Deploy
 Send the new data to the server.
 
@@ -10,6 +10,8 @@ Send the new data to the server.
   That's going to use http://code.google.com/apis/checkout/developer/index.html#notification_api
   
 - Add ?tab=make url parameter so we can have the Login to Make take us to the right spot. 
+
+- Add statistics: what percent of people solved this puzzle? What's the shortest time?
 
 - Keep info on what puzzle the user was playing and which letters were entered,
   and any info on a partially entered puzzle.
@@ -37,3 +39,4 @@ http://code.google.com/appengine/articles/bulkload.html
 
 Recently done:
 - Try uploading a puzzle with a comma. You have to put quotes around the fields.
+- Write a converter from pack files to CSV.
