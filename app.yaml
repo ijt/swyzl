@@ -8,6 +8,10 @@ handlers:
   static_files: media/\1
   upload: media/(.*)
 
+- url: /packs/(.*)
+  static_files: packs/\1
+  upload: packs/(.*\.jpg)
+
 - url: /images/(.*)
   static_files: images/\1
   upload: images/(.*)
@@ -22,8 +26,10 @@ handlers:
   # TODO(ijt): This is supposed to be login: admin, but bulkloader.py
   # fails on that.
 
+# Also for use with the CSV bulk uploader.
 - url: /load_pack_descriptions
   script: pack_description_loading.py
+  # login: admin
 
 # Adds puzzles to their named packs if they aren't already in them.
 - url: /orphans
