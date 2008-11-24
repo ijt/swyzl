@@ -248,6 +248,14 @@ class NotFound(webapp.RequestHandler):
                             "<a href='/'>puzzle</a>?")
 
 
+class ClearPuzzles(webapp.RequestHandler):
+  def get(self):
+    puzzles = models.Puzzle.all().fetch(10000)
+    for puzzle in puzzles:
+      puzzle.delete()
+    self.response.out.write('Deleted %s puzzles.' % len(puzzles))
+
+
 class SetPuzzleOfTheDay(webapp.RequestHandler):
   def get(self, puzzle_key_str):
     models.SetPuzzleOfTheDay(db.get(db.Key(puzzle_key_str)))
@@ -276,6 +284,7 @@ urls_to_handlers = [('/', MainPage),
                     ('/test_make_puzzle', TestMakePuzzle),
                     
                     # Admin:
+                    ('/clear_puzzles', ClearPuzzles),
                     ('/set_potd/(.*)', SetPuzzleOfTheDay),
 
                     ('.*', NotFound)]

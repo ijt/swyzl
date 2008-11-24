@@ -126,3 +126,13 @@ class TestWithTwoPuzzlesAndOnePack(unittest.TestCase):
   def testThat_PuzzlesLoader_Exists(self):
     import puzzle_loading
     puzzles_loader = puzzle_loading.PuzzlesLoader()
+
+  def testClearPuzzles(self):
+    app = TestApp(main_view.application)
+    response = app.get('/clear_puzzles')
+    self.assertEqual('200 OK', response.status)
+    self.assertTrue('Deleted 2 puzzles.' in str(response))
+    self.assertEqual(0, len(models.Puzzle.all().fetch(10000)))
+
+
+
