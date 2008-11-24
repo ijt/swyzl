@@ -1,10 +1,6 @@
-Convert and upload the country capital cryptos to localhost
-Add a file with the puzzle pack header info: packs/headers.py
-Deploy
-Send the new data to the server.
+- Order the puzzles numerically in the nav column.
 
-- Write script to clear db and populate it with puzzles.
-- Write puzzle pack-based UI.
+- Possibly do something other than having a puzzle of the day.
 
 - Figure out how to get gcheckout to notify the swyzl back-end of the purchases that have been made.
   That's going to use http://code.google.com/apis/checkout/developer/index.html#notification_api
@@ -38,5 +34,9 @@ http://code.google.com/appengine/articles/bulkload.html
 
 
 Recently done:
-- Try uploading a puzzle with a comma. You have to put quotes around the fields.
-- Write a converter from pack files to CSV.
+- Convert and upload the country capital cryptos to localhost
+- Add a file with the puzzle pack header info: packs/headers.py
+- Deploy
+- Send the new data to the server.
+- Write script to clear db and populate it with puzzles.
+

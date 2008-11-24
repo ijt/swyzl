@@ -36,20 +36,23 @@ class TestWithNoData(unittest.TestCase):
 
 class TestWithTwoPuzzlesAndOnePack(unittest.TestCase):
   def setUp(self):
+    pack_title = "Pack of Joy"
     self.puzzle1 = models.Puzzle(
         name='1',
         solution_text="IN FOG, SUN, OR RAIN YOU CAN LOOK FOR AGATES ON",
         cipher_text  ="EA XCB, VSA, CM MQEA GCS WQA HCCZ XCM QBQNLV CA",
-        short_clue="E is I")
+        short_clue="E is I",
+        pack_title=pack_title)
     self.puzzle2 = models.Puzzle(
         name='2',
         solution_text="THE TIDES MOVE IN AND OUT OVER TIDE POOLS, RICH",
         cipher_text  ="GYS GMWSK BFZS ME VEW FOG FZSC GMWS HFFQK, CMNY",
-        short_clue="S is E")
+        short_clue="S is E",
+        pack_title=pack_title)
     self.puzzle1.put()
     self.puzzle2.put()
     self.puzzle_pack = models.PackOfPuzzles(
-        title="Pack of Joy",
+        title=pack_title,
         puzzle_keys=[self.puzzle1.key(), self.puzzle2.key()])
     self.puzzle_pack.put()
     models.SetPuzzleOfTheDay(self.puzzle2)
@@ -149,4 +152,11 @@ class TestWithTwoPuzzlesAndOnePack(unittest.TestCase):
     self.assertTrue('Deleted 1 packs.' in str(response))
     self.assertEqual(0, len(models.PackOfPuzzles.all().fetch(10000)))
 
-
+  def test_SetPuzzleOfTheDayToFirst_FromBrowser(self):
+    app = TestApp(main_view.application)
+    response = app.get('/set_potd_to_first')
+    self.assertEqual('200 OK', response.status)
+    expected = 'Set puzzle of the day to Pack of Joy: 1'
+    self.assertTrue(expected in response)
+    self.assertEqual(self.puzzle1.key(), models.GetPuzzleOfTheDay().key())
+    

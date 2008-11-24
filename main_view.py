@@ -268,7 +268,19 @@ class SetPuzzleOfTheDay(webapp.RequestHandler):
   def get(self, puzzle_key_str):
     models.SetPuzzleOfTheDay(db.get(db.Key(puzzle_key_str)))
     self.response.out.write('Set puzzle of the day to %s' % puzzle_key_str)
-    
+
+
+class SetPuzzleOfTheDayToFirst(webapp.RequestHandler):
+  """Sets the puzzle of the day to the first puzzle in the db.
+  
+  This is just a way to have some content up instead of an "empty" message.
+  """
+  def get(self):
+    puzzle = models.Puzzle.all().get()
+    models.SetPuzzleOfTheDay(puzzle)
+    msg = 'Set puzzle of the day to %s: %s' % (puzzle.pack_title, puzzle.name)
+    self.response.out.write(msg)
+
 
 def WriteTemplate(request, response, template_name, params, mime_type='text/html'):
   '''Shows a template with some parameters'''
@@ -295,6 +307,7 @@ urls_to_handlers = [('/', MainPage),
                     ('/clear_puzzles', ClearPuzzles),
                     ('/clear_packs', ClearPacks),
                     ('/set_potd/(.*)', SetPuzzleOfTheDay),
+                    ('/set_potd_to_first', SetPuzzleOfTheDayToFirst),
 
                     ('.*', NotFound)]
 application = webapp.WSGIApplication(urls_to_handlers, debug=True)
