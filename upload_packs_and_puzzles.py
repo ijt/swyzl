@@ -1,5 +1,7 @@
 #!/usr/bin/env python2.5
 
+import urllib
+
 import pack_parsing
 
 
@@ -40,8 +42,12 @@ def MakeCommandForUploadingPackCsv(hostname, pack_csv_filename):
 
 
 def Main(hostname, pack_filenames):
-  # TODO(ijt): Run a command to clear the data store of puzzles and packs.
-  
+  host_url = 'http://' + hostname
+
+  # Start fresh by removing all puzzles and packs.
+  urllib.urlopen(host_url + '/clear_puzzles')
+  urllib.urlopen(host_url + '/clear_packs')
+
   # Bulk upload the pack descriptions.
   command = MakeCommandForUploadingPackDescriptions(hostname)
   DoSystemCall(command)
@@ -52,6 +58,8 @@ def Main(hostname, pack_filenames):
     command = MakeCommandForUploadingPackCsv(hostname, pack_csv_name)
     DoSystemCall(command)
 
+  urllib.urlopen(host_url + '/orphans')  
+
 
 if __name__ == '__main__':
   import glob
@@ -59,4 +67,6 @@ if __name__ == '__main__':
     hostname = sys.argv[1]
   except:
     print 'Usage: upload_packs_and_puzzles.py hostname'
+    print 'Example: ./upload_packs_and_puzzles.py localhost:8080'
+    print 'Example: ./upload_packs_and_puzzles.py swyzl.appspot.com'
   Main(hostname, pack_filenames=glob.glob('packs/*.pack'))
