@@ -78,4 +78,19 @@ def PutPuzzlesIntoPackFormat(puzzles):
   return lines
 
 
+def ConvertPackFileToCsv(filename, pack_name):
+  """Converts a pack file to CSV format.
+  
+  For example, given a pack file called presidents.pack, calling 
+  ConvertPackFileToCsv('presidents.pack', pack_name='Presidential Cryptos')
+  will generate a new file called presidents.csv suitable for bulk uploading
+  to the server.
+  """
+  puzzles = ParseString(open(filename).read())  
+  lines = [ConvertPuzzleToCsvLine(p, pack_name) for p in puzzles]
+  csv_filename = filename.replace('.pack', '') + '.csv'
+  outfile = open(csv_filename, 'w')
+  outfile.write('\n'.join(lines))
+  outfile.close()
+
 
