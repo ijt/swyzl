@@ -27,6 +27,12 @@ class TestWithNoData(unittest.TestCase):
     except models.NotFoundError:
       pass # OK
 
+  def testClearPacks(self):
+    app = TestApp(main_view.application)
+    response = app.get('/clear_packs')
+    self.assertEqual('200 OK', response.status)
+    self.assertTrue('Deleted 0 packs.' in str(response))
+
 
 class TestWithTwoPuzzlesAndOnePack(unittest.TestCase):
   def setUp(self):
@@ -128,11 +134,19 @@ class TestWithTwoPuzzlesAndOnePack(unittest.TestCase):
     puzzles_loader = puzzle_loading.PuzzlesLoader()
 
   def testClearPuzzles(self):
+    self.assertEqual(2, len(models.Puzzle.all().fetch(10000)))
     app = TestApp(main_view.application)
     response = app.get('/clear_puzzles')
     self.assertEqual('200 OK', response.status)
     self.assertTrue('Deleted 2 puzzles.' in str(response))
     self.assertEqual(0, len(models.Puzzle.all().fetch(10000)))
 
+  def testClearPacks(self):
+    self.assertEqual(1, len(models.PackOfPuzzles.all().fetch(10000)))
+    app = TestApp(main_view.application)
+    response = app.get('/clear_packs')
+    self.assertEqual('200 OK', response.status)
+    self.assertTrue('Deleted 1 packs.' in str(response))
+    self.assertEqual(0, len(models.PackOfPuzzles.all().fetch(10000)))
 
 

@@ -256,6 +256,14 @@ class ClearPuzzles(webapp.RequestHandler):
     self.response.out.write('Deleted %s puzzles.' % len(puzzles))
 
 
+class ClearPacks(webapp.RequestHandler):
+  def get(self):
+    packs = models.PackOfPuzzles.all().fetch(10000)
+    for pack in packs:
+      pack.delete()
+    self.response.out.write('Deleted %s packs.' % len(packs))
+
+
 class SetPuzzleOfTheDay(webapp.RequestHandler):
   def get(self, puzzle_key_str):
     models.SetPuzzleOfTheDay(db.get(db.Key(puzzle_key_str)))
@@ -285,6 +293,7 @@ urls_to_handlers = [('/', MainPage),
                     
                     # Admin:
                     ('/clear_puzzles', ClearPuzzles),
+                    ('/clear_packs', ClearPacks),
                     ('/set_potd/(.*)', SetPuzzleOfTheDay),
 
                     ('.*', NotFound)]
