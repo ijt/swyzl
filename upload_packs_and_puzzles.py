@@ -62,6 +62,7 @@ def Main(hostname, pack_filenames):
 
 
 if __name__ == '__main__':
+  import sys
   import glob
   try:
     hostname = sys.argv[1]
@@ -69,4 +70,5 @@ if __name__ == '__main__':
     print 'Usage: upload_packs_and_puzzles.py hostname'
     print 'Example: ./upload_packs_and_puzzles.py localhost:8080'
     print 'Example: ./upload_packs_and_puzzles.py swyzl.appspot.com'
+    sys.exit(1)
   Main(hostname, pack_filenames=glob.glob('packs/*.pack'))
