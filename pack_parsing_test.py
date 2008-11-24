@@ -1,10 +1,10 @@
 #!/usr/bin/env python2.4
-import parse_puzzle_pack
+import pack_parsing
 import unittest
 
 class ParsePuzzlePackTestCase(unittest.TestCase):
   def testEmptyCase(self):
-    self.assertEqual([], parse_puzzle_pack.ParseString(''))
+    self.assertEqual([], pack_parsing.ParseString(''))
 
   def testOnOneGoodPuzzle(self):
     file_string = '''
@@ -15,7 +15,7 @@ class ParsePuzzlePackTestCase(unittest.TestCase):
     J'n gzzmjoh qvaamze.
     
     '''
-    [puzzle] = parse_puzzle_pack.ParseString(file_string)
+    [puzzle] = pack_parsing.ParseString(file_string)
     self.assertEqual('1', puzzle['name'])
     self.assertEqual('Z is E.', puzzle['short_clue'])
     self.assertEqual('I\'m feeling puzzled.', puzzle['solution_text'])
@@ -38,7 +38,7 @@ class ParsePuzzlePackTestCase(unittest.TestCase):
     Hp sfbn!
 
     '''
-    [puzzle1, puzzle2] = parse_puzzle_pack.ParseString(file_string)
+    [puzzle1, puzzle2] = pack_parsing.ParseString(file_string)
     expected1 = {'name': '1',
                  'short_clue': 'Z is E.',
                  'solution_text': 'I\'m feeling puzzled.',
@@ -65,7 +65,7 @@ class ParsePuzzlePackTestCase(unittest.TestCase):
         
     '''
     try:
-      parse_puzzle_pack.ParseString(file_string)
+      pack_parsing.ParseString(file_string)
       self.fail('Expected a value error on incorrect puzzle.')
     except ValueError, e:
       self.assertTrue('puzzle 1' in str(e).lower())
@@ -75,7 +75,7 @@ class ParsePuzzlePackTestCase(unittest.TestCase):
               'short_clue': '',
               'solution_text': '',
               'cipher_text': ''}
-    csv = parse_puzzle_pack.ConvertPuzzleToCsvLine(puzzle=puzzle,
+    csv = pack_parsing.ConvertPuzzleToCsvLine(puzzle=puzzle,
                                                    pack_title='')
     expected = ',,,,'
     self.assertEqual(expected, csv)
@@ -86,37 +86,37 @@ class ParsePuzzlePackTestCase(unittest.TestCase):
               'short_clue': str_for_quoting,
               'solution_text': str_for_quoting,
               'cipher_text': str_for_quoting}
-    csv = parse_puzzle_pack.ConvertPuzzleToCsvLine(puzzle=puzzle,
+    csv = pack_parsing.ConvertPuzzleToCsvLine(puzzle=puzzle,
                                                    pack_title=str_for_quoting)
     expected = '"a,b","a,b","a,b","a,b","a,b"'
     self.assertEqual(expected, csv)
 
   def testEscapeCsvFieldOnStringContainingInnerQuotes(self):
-    self.assertEqual('a"b"c', parse_puzzle_pack.EscapeCsvField('a"b"c'))
+    self.assertEqual('a"b"c', pack_parsing.EscapeCsvField('a"b"c'))
 
   def testEscapeCsvFieldOnStringContainingQuoteAtEnd(self):
     # This does not require surrounding the whole string in quotes.
-    self.assertEqual('a"b"', parse_puzzle_pack.EscapeCsvField('a"b"'))
+    self.assertEqual('a"b"', pack_parsing.EscapeCsvField('a"b"'))
 
   def testEscapeCsvFieldOnStringContainingQuoteAtBeginning(self):
     # This requires surrounding the whole string in quotes.
-    self.assertEqual('"""a""b"', parse_puzzle_pack.EscapeCsvField('"a"b'))
+    self.assertEqual('"""a""b"', pack_parsing.EscapeCsvField('"a"b'))
     
   def testEscapeCsvFieldOnStringContainingQuotesAtBeginningAndEnd(self):
-    self.assertEqual('"""a"""', parse_puzzle_pack.EscapeCsvField('"a"'))
+    self.assertEqual('"""a"""', pack_parsing.EscapeCsvField('"a"'))
 
   def testEscapeCsvFieldOnStringContainingCommas(self):
-    self.assertEqual('"a,b, c"', parse_puzzle_pack.EscapeCsvField('a,b, c'))
+    self.assertEqual('"a,b, c"', pack_parsing.EscapeCsvField('a,b, c'))
 
   def testSwapSolutionAndCipher(self):
     puzzle_frag = {'solution_text': 'cipher_oops_haha',
                    'cipher_text': 'soln_oops_haha'}
-    puzzle2 = parse_puzzle_pack.SwapSolutionAndCipher(puzzle_frag)
+    puzzle2 = pack_parsing.SwapSolutionAndCipher(puzzle_frag)
     self.assertEqual('soln_oops_haha', puzzle2['solution_text'])
     self.assertEqual('cipher_oops_haha', puzzle2['cipher_text'])
 
   def testPutPuzzlesIntoPackFormat(self):
-    pack_lines = parse_puzzle_pack.PutPuzzlesIntoPackFormat([])
+    pack_lines = pack_parsing.PutPuzzlesIntoPackFormat([])
     self.assertEqual([], pack_lines)
     
 
@@ -128,11 +128,11 @@ class TestCaseWithFakePuzzle(unittest.TestCase):
                    'cipher_text': 'Cipher'}    
      
   def testPutPuzzlesIntoPackFormat(self):
-    pack_lines = parse_puzzle_pack.PutPuzzlesIntoPackFormat([self.puzzle])
+    pack_lines = pack_parsing.PutPuzzlesIntoPackFormat([self.puzzle])
     self.assertEqual(['Name', 'Clue', 'Soln', 'Cipher'], pack_lines)
 
   def testConvertPuzzleToCsvLine(self):
-    csv = parse_puzzle_pack.ConvertPuzzleToCsvLine(puzzle=self.puzzle,
+    csv = pack_parsing.ConvertPuzzleToCsvLine(puzzle=self.puzzle,
                                                    pack_title='Pack')
     expected = 'Name,Cipher,Soln,Clue,Pack'
     self.assertEqual(expected, csv)
