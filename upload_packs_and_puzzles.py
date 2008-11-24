@@ -1,5 +1,9 @@
 #!/usr/bin/env python2.5
 
+import glob
+import os
+import re
+import sys
 import urllib
 
 import pack_parsing
@@ -20,8 +24,8 @@ def ConvertPackFilenameToTitle(pack_filename):
   
   For example, 'country_capital_cryptos' becomes 'Country Capital Cryptos'.
   """
-  import re
-  basename = re.compile(r'\.pack').sub('', pack_filename)
+  basename = pack_filename.split('/')[-1]
+  basename = re.compile(r'\.pack').sub('', basename)
   return ' '.join([part.capitalize() for part in basename.split('_')])
 
 
@@ -48,9 +52,11 @@ def Main(hostname, pack_filenames):
   urllib.urlopen(host_url + '/clear_puzzles')
   urllib.urlopen(host_url + '/clear_packs')
 
-  # Bulk upload the pack descriptions.
+  # Bulk-upload the pack descriptions.
   command = MakeCommandForUploadingPackDescriptions(hostname)
   DoSystemCall(command)
+  
+  # Bulk-upload the puzzles.
   for pack_filename in pack_filenames:
     title = ConvertPackFilenameToTitle(pack_filename)
     pack_parsing.ConvertPackFileToCsv(pack_filename, title)
@@ -58,12 +64,11 @@ def Main(hostname, pack_filenames):
     command = MakeCommandForUploadingPackCsv(hostname, pack_csv_name)
     DoSystemCall(command)
 
+  # Add the puzzles to their packs in the datastore.
   urllib.urlopen(host_url + '/orphans')  
 
 
 if __name__ == '__main__':
-  import sys
-  import glob
   try:
     hostname = sys.argv[1]
   except:

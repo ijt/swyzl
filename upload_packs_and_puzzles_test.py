@@ -14,6 +14,10 @@ class UploadingTestCase(unittest.TestCase):
     self.assertEquals('Foggy Places',
                       uploading.ConvertPackFilenameToTitle('foggy_places.pack'))
 
+  def testConvertPackFilenameToTitleWithPacksDirPrefix(self):
+    self.assertEquals('Foggy Places',
+                      uploading.ConvertPackFilenameToTitle('packs/foggy_places.pack'))    
+
   def testMakeCommandForUploadingPackDescriptions(self):
     cmd = uploading.MakeCommandForUploadingPackDescriptions('localhost:8080')
     expected = ('bulkload_client.py --url=http://localhost:8080/load_pack_descriptions '
