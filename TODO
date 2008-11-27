@@ -1,3 +1,5 @@
+- Move between letters using arrow keys. (left = 37, right = 39)
+
 - Order the puzzles numerically in the nav column.
 
 - Possibly do something other than having a puzzle of the day.

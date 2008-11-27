@@ -47,13 +47,15 @@ function onKeyDown(cipherChar, userCharCode, currentBoxIndex) {
 
   var boxToFocus = null;
 
-  // Move to the next text box if the key was spacebar or a letter.
-  if (isLetterCode(userCharCode) || userCharCode == SPACE) {
+  // Move to the next text box if the key was spacebar or a letter or right
+  // arrow.
+  if (isLetterCode(userCharCode) || userCharCode == SPACE ||
+      userCharCode == RIGHT_ARROW) {
     var boxToFocus = $('box' + (currentBoxIndex + 1))
   }
   
-  // Move back on backspace.
-  if (userCharCode == BACKSPACE) {
+  // Move back on backspace or left arrow.
+  if (userCharCode == BACKSPACE || userCharCode == LEFT_ARROW) {
     var boxToFocus = $('box' + (currentBoxIndex - 1))
   }
   
