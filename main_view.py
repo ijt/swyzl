@@ -110,6 +110,10 @@ class TipsPage(webapp.RequestHandler):
   def get(self):
     WriteTemplate(self.request, self.response, 'tips.html', {})
 
+class HomePage(webapp.RequestHandler):
+  def get(self):
+    WriteTemplate(self.request, self.response, 'home.html', {})
+
 
 class InitPuzzleData(webapp.RequestHandler):
   def get(self):
@@ -170,7 +174,6 @@ class PlayPuzzleOfTheDay(webapp.RequestHandler):
       puzzle_viewer.ShowPuzzle(title, puzzle, self.request, self.response)
     except models.NotFoundError:
       self.response.out.write('There\'s no puzzle today. :/')
-
 
 class MakePuzzle(webapp.RequestHandler):
   def get(self):
@@ -302,6 +305,7 @@ urls_to_handlers = [('/', MainPage),
                     ('/puzzle/(.*)', PlayPuzzle),
                     ('/tips', TipsPage),
                     ('/test_make_puzzle', TestMakePuzzle),
+                    ('/home', HomePage),
                     
                     # Admin:
                     ('/clear_puzzles', ClearPuzzles),

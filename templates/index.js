@@ -10,11 +10,11 @@ function setContentTo(url) {
 }
 
 function init() {
-  playPuzzleOfTheDay();
+  goHome();
 }
 
 function getTabs() {
-  var tabIds = ['tab-make', 'tab-play', 'tab-tips'];
+  var tabIds = ['tab-make', 'tab-play', 'tab-tips', 'tab-home'];
   var result = [];
   for (var i = 0; i < tabIds.length; i++) {
     result.push($(tabIds[i]));
@@ -51,6 +51,11 @@ function makePuzzle() {
 function tips() {
   setContentTo("/tips");
   setActiveTab('tab-tips');
+}
+
+function goHome() {
+  setContentTo("/home");
+  setActiveTab('tab-home');
 }
 
 /**
