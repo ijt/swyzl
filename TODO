@@ -1,4 +1,6 @@
-- Move between letters using arrow keys. (left = 37, right = 39)
+- When you solve a puzzle it should take you to the next one.
+
+- Have the initial page be a hall of fame showing who solved the most puzzles and who is the fastest.
 
 - Order the puzzles numerically in the nav column.
 
@@ -36,9 +38,3 @@ http://code.google.com/appengine/articles/bulkload.html
 
 
 Recently done:
-- Convert and upload the country capital cryptos to localhost
-- Add a file with the puzzle pack header info: packs/headers.py
-- Deploy
-- Send the new data to the server.
-- Write script to clear db and populate it with puzzles.
-

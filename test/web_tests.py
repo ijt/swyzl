@@ -152,11 +152,11 @@ class TestWithTwoPuzzlesAndOnePack(unittest.TestCase):
     self.assertTrue('Deleted 1 packs.' in str(response))
     self.assertEqual(0, len(models.PackOfPuzzles.all().fetch(10000)))
 
-  def test_SetPuzzleOfTheDayToFirst_FromBrowser(self):
+  def testSetPuzzleOfTheDayToFirst_FromBrowser(self):
     app = TestApp(main_view.application)
     response = app.get('/set_potd_to_first')
     self.assertEqual('200 OK', response.status)
     expected = 'Set puzzle of the day to Pack of Joy: 1'
     self.assertTrue(expected in response)
     self.assertEqual(self.puzzle1.key(), models.GetPuzzleOfTheDay().key())
-    
+

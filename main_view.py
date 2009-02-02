@@ -115,19 +115,6 @@ class HomePage(webapp.RequestHandler):
     WriteTemplate(self.request, self.response, 'home.html', {})
 
 
-class InitPuzzleData(webapp.RequestHandler):
-  def get(self):
-    import data.init_puzzle_data
-    self.response.out.write('Initialized puzzle data.')
-
-
-class LoadPuzzles(webapp.RequestHandler):
-  """Puts some puzzles into the data store."""
-  def get(self):
-    from books import parks1
-    parks1.Save()
-
-
 def GetTagWithName(name):
   tag = models.Tag.gql('WHERE text = :1', name).get()
   if not tag:
@@ -297,7 +284,6 @@ urls_to_handlers = [('/', MainPage),
                     ('/buynow', BuyNowExperiment),
                     ('/done_with_puzzle', DoneWithPuzzle),
                     ('/encrypt', Encrypt),
-                    ('/init_puzzle_data', InitPuzzleData),
                     ('/make', MakePuzzle),
                     ('/js_for_make', JsForMake),
                     ('/make_puzzle_ui', MakePuzzleUi),  # makes a puzzle ui
