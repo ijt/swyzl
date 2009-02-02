@@ -98,7 +98,7 @@ class MainPage(webapp.RequestHandler):
       'packs': packs,
       'user': user
     }    
-    WriteTemplate(self.request, self.response, 'index.html', params)
+    WriteTemplate(self.request, self.response, 'home.html', params)
 
 
 class AboutPage(webapp.RequestHandler):
@@ -109,10 +109,6 @@ class AboutPage(webapp.RequestHandler):
 class TipsPage(webapp.RequestHandler):
   def get(self):
     WriteTemplate(self.request, self.response, 'tips.html', {})
-
-class HomePage(webapp.RequestHandler):
-  def get(self):
-    WriteTemplate(self.request, self.response, 'home.html', {})
 
 
 def GetTagWithName(name):
@@ -291,7 +287,6 @@ urls_to_handlers = [('/', MainPage),
                     ('/puzzle/(.*)', PlayPuzzle),
                     ('/tips', TipsPage),
                     ('/test_make_puzzle', TestMakePuzzle),
-                    ('/home', HomePage),
                     
                     # Admin:
                     ('/clear_puzzles', ClearPuzzles),

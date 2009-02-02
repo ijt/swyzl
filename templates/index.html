@@ -36,27 +36,7 @@
         <div class="box-top">
           <div class="box-bottom">
             <div class="box">
-              {% for pack in packs %}
-                <div class="pack">
-                  <div class="thumbnail">
-                    <img src="/packs/{{ pack.thumbnail_url_part }}" />
-                  </div>
-                  <div class="description">
-                    <div class="pack_title">
-                      {{ pack.title }}
-                    </div>
-                    <div class="pack_count">
-                      {{ pack.count }} puzzles
-                    </div>
-                  </div>
-                  <div class="table_of_contents">
-                    <a href="javascript:setContentTo('{{ pack.introduction_url }}')"></a>
-                    {% for puzzle in pack.puzzles %}
-                      <a href="javascript:setContentTo('{{ puzzle.relative_url }}')">{{ puzzle.name }}</a>
-                    {% endfor %}
-                  </div>
-                </div>
-              {% endfor %}  
+ 
             </div>
           </div>
         </div>

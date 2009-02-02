@@ -1,3 +1,21 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="description" content=
+  "Swyzl is a word puzzle game where you unscramble a secret message by guessing the hidden letter-to-letter code." />
+  <meta name="keywords" content=
+  "puzzle, word puzzle, crypto, cryptology" />
+  <meta name="viewport" content=
+  "width=device-width; initial-scale=1.0; maximum-scale=2.5; user-scalable=1;" />
+  <link href="media/all.css" rel="stylesheet" type="text/css" />
+  <style type="text/css" media="screen">
+    {% include "puzzle.css" %}
+  </style>
+  <!--[if lt IE 7]><link href="media/ie.css" rel="stylesheet" type="text/css" /><![endif]-->
+  <title>SWYZL</title>
+</head>
+<body>
 
   <p>Julia was puzzled by many things, but not by puzzles. She would arrange the letters in her mind as 
 	she lay in bed, then spoke them to her computer once she arose. None of the puzzles here were 
@@ -5,8 +23,28 @@
    <br/>
   <p>We hope that you enjoy solving them as much as she enjoyed writing them. Choose from the books below to get started.</p>
    <br/>
-
-[ INSERT BOOKS HERE ]
    
-  <p>If you aren't sure what a Cryptogram is, check out our <a href="javascript:tips()">tips</a></p>
-  
+  <p>If you aren't sure what a Cryptogram is, check out our <a href="tips">tips</a>.</p>
+
+  <div class="pack_set">
+  {% for pack in packs %}
+    <div class="pack">
+      <div class="thumbnail">
+        <img src="/packs/{{ pack.thumbnail_url_part }}" />
+      </div>
+      <div class="description">
+        <div class="pack_title">
+          {{ pack.title }}
+        </div>
+      </div>
+      <div class="table_of_contents">
+        <a href="{{ pack.introduction_url }}"></a>
+        {% for puzzle in pack.puzzles %}
+          <a href="{{ puzzle.relative_url }}">{{ puzzle.name }}</a>
+        {% endfor %}
+      </div>
+    </div>
+  {% endfor %}
+  </div>
+</body>
+</html>

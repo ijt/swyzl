@@ -1,7 +1,7 @@
 /*---Global---*/
 body{
 	margin:0;
-	background:#fff url(../images/body-grad.jpg) repeat-x;
+	background:#fff;
 	font:14px "Courier New", Courier, monospace;
 }
 ul, p, h1, h2, h3, h4, h5{
