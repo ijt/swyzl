@@ -1,2 +1,6 @@
-Run ../upload_packs_and_puzzles.py to upload the data in this directory.
+To add a new pack called Foo:
+  1. Make an icon image Foo.png.
+  2. Create a file called Foo.pack containing the puzzles.
+  3. Update pack_descriptions.csv to register your pack.
+  4. Run python ../upload_packs_and_puzzles.py to upload the data in this directory.
 

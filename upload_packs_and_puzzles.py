@@ -58,6 +58,7 @@ def Main(hostname, pack_filenames):
   
   # Bulk-upload the puzzles.
   for pack_filename in pack_filenames:
+    print 'processing ' + pack_filename
     title = ConvertPackFilenameToTitle(pack_filename)
     pack_parsing.ConvertPackFileToCsv(pack_filename, title)
     pack_csv_name = os.path.splitext(pack_filename)[0] + '.csv'
