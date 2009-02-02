@@ -92,6 +92,12 @@
   clear: left;
 }
 
+#done_button_div {
+  margin-top:1em;
+  font-size:2.3em;
+  font-weight:bold;
+}
+
 #short_clue_div {
   margin-bottom: .75em;
 }

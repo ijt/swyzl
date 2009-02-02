@@ -35,8 +35,7 @@
         {% endif %}
       </div>
       <div id="done_button_div">
-        <input id="done_button" type="button" value="Done"
-         onclick="onDone('{{ puzzle.key }}')" />
+        <a href="javascript:onDone('{{ puzzle.key }}')">Done</a>
       </div>
       <div id="alert_div"></div>
     </div>
