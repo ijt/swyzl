@@ -90,14 +90,14 @@ def GenerateWordHtmls(cipher_words):
       if char.isalpha():
         # The code char is part of the input tag's class.  That way we can
         # easily find all the input boxes for a given code character.
-        input_tag = ('<input id="box%s" class="SwyzlTextBox %s" maxlength="1"'
+        input_tag = ('<input id="box%s" class="SwyzlTextBox %s" maxlength="1" '
                      % (box_index, char))
         # The size is set to 2 because setting it to 1 is supposed to not be
         # well supported on all browsers.  The onKeyPress callback is defined
         # in the GWT code.
         callback = ("return onKeyDown('%s', event.keyCode || event.which, %i)" %
                     (char, box_index))
-        input_tag += 'size="2" onkeyDown="%s"></input>' % callback
+        input_tag += 'size="2" onkeyDown="%s">' % callback
         top_row.append(input_tag)
         bot_row.append(char)
         box_index += 1
