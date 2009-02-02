@@ -16,48 +16,46 @@
   <title>SWYZL {{ title }}</title>
 </head>
   <body>
-  <h1><a href="/">Swyzl</a></h1>
-  <br/>
+    <h1><a href="/">Swyzl</a></h1><br/>
 
-  <div id="puzzle_div">
-    <div id="title_div">
-      {{ title }}
+    <div id="puzzle_div">
+      <div id="title_div">
+        {{ title }}
+      </div>
+      <div id="tags_div">
+        {% if puzzle.tags_string %}
+          Tags: {{ puzzle.tags_string }}
+        {% endif %}
+      </div>
+      <div id="short_clue_div">
+        {% if puzzle.short_clue %}
+          Clue: {{ puzzle.short_clue }}
+        {% endif %}
+      </div>
+      <div id="words_div">
+        {% for word_html in word_htmls %}
+          {{ word_html }}
+        {% endfor %}
+      </div>
+      <div id="long_clue_div">
+        {% if puzzle.long_clue %}
+          {{ puzzle.long_clue }}
+        {% endif %}
+      </div>
+      <div id="done_button_div">
+        <input id="done_button" type="button" value="Done"
+         onclick="onDone('{{ puzzle.key }}')" />
+      </div>
+      <div id="alert_div"></div>
     </div>
-    <div id="tags_div">
-      {% if puzzle.tags_string %}
-        Tags: {{ puzzle.tags_string }}
-      {% endif %}
-    </div>
-    <div id="short_clue_div">
-      {% if puzzle.short_clue %}
-        Clue: {{ puzzle.short_clue }}
-      {% endif %}
-    </div>
-    <div id="words_div">
-      {% for word_html in word_htmls %}
-        {{ word_html }}
-      {% endfor %}
-    </div>
-    <div id="long_clue_div">
-      {% if puzzle.long_clue %}
-        {{ puzzle.long_clue }}
-      {% endif %}
-    </div>
-    <div id="done_button_div">
-      <input id="done_button" type="button" value="Done &rarr;"
-       onclick="onDone('{{ puzzle.key }}')" />
-    </div>
-    <div id="alert_div"></div>
-  </div>
-
-  <script type="text/javascript" charset="utf-8" src="/media/scriptaculous-js-1.8.1/lib/prototype.js"></script>
-  <script type="text/javascript" charset="utf-8" src="/media/scriptaculous-js-1.8.1/src/scriptaculous.js"></script>
-  <script type="text/javascript" charset="utf-8">
-    // Swyzl's namespace
-    var swyzl = {};
-{% include "puzzle.js" %}
-{% include "utils.js" %}
-  </script>
-
+    
+    <script type="text/javascript" charset="utf-8" src="/media/scriptaculous-js-1.8.1/lib/prototype.js"></script>
+    <script type="text/javascript" charset="utf-8" src="/media/scriptaculous-js-1.8.1/src/scriptaculous.js"></script>
+    <script type="text/javascript" charset="utf-8">
+      // Swyzl's namespace
+      var swyzl = {};
+  {% include "puzzle.js" %}
+  {% include "utils.js" %}
+    </script>
   </body>
 </html>
