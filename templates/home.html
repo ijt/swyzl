@@ -11,6 +11,11 @@
   <link href="media/all.css" rel="stylesheet" type="text/css" />
   <!--[if lt IE 7]><link href="media/ie.css" rel="stylesheet" type="text/css" /><![endif]-->
   <title>SWYZL</title>
+  
+  <style>
+    *.pack_title { font-size:2em; color:#d26f2c; }
+    *.link_to_puzzle, *.link_to_tips { font-size:1.8em; }
+  </style>
 </head>
 <body>
 
@@ -20,30 +25,24 @@
   <br/>
   <p>We hope that you enjoy solving them as much as she enjoyed writing them. Choose from the books below to get started.</p>
   <br/> 
-  <p>If you aren't sure what a Cryptogram is, check out our <a href="tips">tips</a>.</p>
+  <p>If you aren't sure what a Cryptogram is, check out our <span class="link_to_tips"><a href="tips">tips</a></span>.</p>
   <br/>
 
   <div class="pack_set">
   {% for pack in packs %}
     <div class="pack">
-      <!--
-      <div class="thumbnail">
-        <img src="/packs/{{ pack.thumbnail_url_part }}" />
-      </div>
-      -->
-      <div class="description">
-        <div class="pack_title">
-          {{ pack.title }}
-        </div>
-      </div>
+      <span class="pack_title">
+        {{ pack.title }}
+      </span>
       <div class="table_of_contents">
-        <a href="{{ pack.introduction_url }}"></a>
         {% for puzzle in pack.puzzles %}
-          <a href="{{ puzzle.relative_url }}">{{ puzzle.name }}</a>
+          <span class="link_to_puzzle">
+            <a href="{{ puzzle.relative_url }}">{{ puzzle.name }}</a>
+          </span>
         {% endfor %}
       </div>
-      <br/>
     </div>
+    <br/>
   {% endfor %}
   </div>
 </body>

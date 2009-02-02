@@ -1,6 +1,6 @@
 /*---Global---*/
 body{
-	margin:0;
+	margin:20px;
 	background:#fff;
 	font:14px "Courier New", Courier, monospace;
 }
@@ -9,8 +9,6 @@ ul, p, h1, h2, h3, h4, h5{
 	padding:0;
 }
 ul, li{list-style:none;}
-a{text-decoration:none;}
-a:hover{text-decoration:underline;}
 /*---GlobalEnd---*/
 /*---Main---*/
 #main{
