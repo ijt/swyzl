@@ -1,6 +1,8 @@
 To add a new pack called Foo:
-  1. Make an icon image Foo.png.
-  2. Create a file called Foo.pack containing the puzzles.
+  1. Create a file called Foo.pack containing the puzzles. The other pack files can help you get
+     an idea of the format.
+  2. Make an icon image Foo.png.
   3. Update pack_descriptions.csv to register your pack.
-  4. Run python ../upload_packs_and_puzzles.py to upload the data in this directory.
+  4. cd ..; python upload_packs_and_puzzles.py localhost:8080 to upload the data in this directory.
+  5. Open localhost:8080 or whatever in your browser and see if the puzzles look right.
 
