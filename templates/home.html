@@ -14,28 +14,18 @@
   <title>SWYZL</title>
   
   <style>
-    *.pack_title { font-size:3em; color:#d26f2c; }
+    p { font-size: 1.5em; }
+    h2 { font-size:3em; color:#d26f2c; font-weight:normal;}
     *.link_to_puzzle, *.link_to_tips { font-size:2.5em; }
   </style>
 </head>
 <body>
   <h1>Swyzl</h1>
   <br/>
-  <p>Julia was puzzled by many things, but not by puzzles. She would arrange the letters in her mind as 
-	she lay in bed, then spoke them to her computer once she arose. None of the puzzles here were 
-	machine generated. They are the thoughtful result of an active mind, keen on her task to the very end. </p>
-  <br/>
-  <p>We hope that you enjoy solving them as much as she enjoyed writing them. Choose from the books below to get started.</p>
-  <br/> 
-  <p>If you aren't sure what a Cryptogram is, check out our <span class="link_to_tips"><a href="tips">tips</a></span>.</p>
-  <br/>
-
   <div class="pack_set">
   {% for pack in packs %}
     <div class="pack">
-      <span class="pack_title">
-        {{ pack.title }}
-      </span>
+      <h2>{{ pack.title }}</h2>
       <div class="table_of_contents">
         {% for puzzle in pack.puzzles %}
           <span class="link_to_puzzle">
@@ -47,6 +37,16 @@
     <br/>
   {% endfor %}
   </div>
+  <br/>
+  <h2>Intro</h2>
+  <p>Julia was puzzled by many things, but not by puzzles. She would arrange the letters in her mind as 
+	she lay in bed, then spoke them to her computer once she arose. None of the puzzles here were 
+	machine generated. They are the thoughtful result of an active mind, keen on her task to the very end. </p>
+  <br/>
+  <p>We hope that you enjoy solving them as much as she enjoyed writing them. Choose from the books above to get started.</p>
+  <br/> 
+  <p>If you aren't sure what a Cryptogram is, check out our <span class="link_to_tips"><a href="tips">tips</a></span>.</p>
+  <br/>
   <div>
     <a href="/about">About</a> | <a href="mailto:issac.trotts+swyzl@gmail.com">Feedback</a>
   </div>
