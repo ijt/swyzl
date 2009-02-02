@@ -5,5 +5,5 @@
 "puzzle, word puzzle, crypto, cryptology" />
 <meta name="viewport" content=
 "width=device-width; initial-scale=1.0; maximum-scale=2.5; user-scalable=1;" />
-<link href="media/all.css" rel="stylesheet" type="text/css" />
+<link href="/media/all.css" rel="stylesheet" type="text/css" />
 <!--[if lt IE 7]><link href="media/ie.css" rel="stylesheet" type="text/css" /><![endif]-->
