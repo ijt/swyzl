@@ -4,18 +4,10 @@ It is only being kept around until we move its contents to other files.
 {% include "doctype" %}
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <meta name="description" content=
-  "Swyzl is a word puzzle game where you unscramble a secret message by guessing the hidden letter-to-letter code." />
-  <meta name="keywords" content=
-  "puzzle, word puzzle, crypto, cryptology" />
-  <meta name="viewport" content=
-  "width=device-width; initial-scale=1.0; maximum-scale=2.5; user-scalable=1;" />
-  <link href="media/all.css" rel="stylesheet" type="text/css" />
+  {% include "head" %}
   <style type="text/css" media="screen">
     {% include "puzzle.css" %}
   </style>
-  <!--[if lt IE 7]><link href="media/ie.css" rel="stylesheet" type="text/css" /><![endif]-->
   <title>SWYZL</title>
 </head>
 <body onload="init();">
