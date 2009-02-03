@@ -1,4 +1,5 @@
 var BACKSPACE = 8;
+var IPHONE_BACKSPACE = 127;
 var SPACE = 32;
 var SHIFT_TAB = 16;
 var LEFT_ARROW = 37;
@@ -29,7 +30,7 @@ function onKeyDown(cipherChar, userCharCode, currentBoxIndex) {
   // Get all the boxes having a class equal to the cipher char.
   var boxes = $$('input.' + cipherChar);
   var userChar;
-  if (userCharCode == BACKSPACE) {
+  if (userCharCode == BACKSPACE || userCharCode == IPHONE_BACKSPACE) {
     userChar = ' ';
   } else if (userCharCode == SHIFT_TAB || userCharCode == TAB) {
     return true;
