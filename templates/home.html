@@ -3,7 +3,8 @@
 <head>
   {% include "head" %}  
   <style>
-    *.link_to_puzzle { font-size: 4em; }
+    li { font-size: 4em; margin-bottom:.25em; margin-top:.25em; margin-left:.5em; float:left; }
+    div.float_cleaner { clear:both; }
     *.link_to_tips { font-size:2.5em; }
   </style>
   <title>Swyzl</title>
@@ -16,11 +17,12 @@
     <div class="pack">
       <h2>{{ pack.title }}</h2>
       <div class="table_of_contents">
+        <ul>
         {% for puzzle in pack.puzzles %}
-          <span class="link_to_puzzle">
-            <a href="{{ puzzle.relative_url }}">{{ puzzle.name }}</a>
-          </span>
+          <li><a href="{{ puzzle.relative_url }}">{{ puzzle.name }}</a></li>
         {% endfor %}
+        </ul>
+        <div class="float_cleaner"></div>
       </div>
     </div>
     <br/>
