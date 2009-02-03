@@ -1,13 +1,20 @@
 body{
 	margin:20px;
 	background:#fff;
-	font:14px "Courier New", Courier, monospace;
+    font:1em "Courier New", Courier, monospace;
 }
 ul, p, h1, h2, h3, h4, h5{
 	margin:0;
 	padding:0;
 }
-h1 { font-size:5em; color:#6f7ea6 }
-h2 { font-size:4em; color:#d26f2c; font-weight:normal;}
-ul, li{list-style:none;}
+h1 { font-size:5em; color:#6f7ea6; }
+h2 { font-size:4em; color:#d26f2c; font-weight:normal; }
+ul, li { list-style:none; }
 p { font-size: 1.5em; }
+th, td {
+    font-size: 2em;
+    vertical-align:top;
+}
+table {
+    border-collapse: collapse;
+}
