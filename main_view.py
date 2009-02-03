@@ -140,8 +140,10 @@ def MakePuzzleTitleForDisplay(puzzle):
 
 
 class PlayPuzzle(webapp.RequestHandler):
-  def get(self, puzzle_key):
-    puzzle = db.get(puzzle_key)
+  def get(self, book_index, puzzle_index):
+    [book_index, puzzle_index] = [int(i) - 1 for i in [book_index, puzzle_index]]
+    books = db.GqlQuery("SELECT * FROM PackOfPuzzles ORDER BY title DESC")
+    puzzle = db.get(books[book_index].puzzle_keys[puzzle_index])
     if puzzle:
       title = MakePuzzleTitleForDisplay(puzzle)
       puzzle_viewer.ShowPuzzle(title, puzzle, self.request, self.response)
@@ -284,7 +286,7 @@ urls_to_handlers = [('/home', MainPage),  # Use this to generate templates/home_
                     ('/js_for_make', JsForMake),
                     ('/make_puzzle_ui', MakePuzzleUi),  # makes a puzzle ui
                     ('/potd', PlayPuzzleOfTheDay),
-                    ('/puzzle/(.*)', PlayPuzzle),
+                    ('/puzzle/(\d+)/(\d+)', PlayPuzzle),
                     ('/tips', TipsPage),
                     ('/test_make_puzzle', TestMakePuzzle),
                     

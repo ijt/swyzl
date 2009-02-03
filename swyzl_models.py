@@ -65,12 +65,14 @@ def GetAllPuzzlePacks(max_count=100):
     max_count: (optional int) how many packs to get at most
   """
   packs = PackOfPuzzles.all().order('title').fetch(max_count)
-  for pack in packs:
+  for i in xrange(len(packs)):
+    pack = packs[i]
     pack.puzzles = [db.get(key) for key in pack.puzzle_keys]
     pack.puzzles = sorted(pack.puzzles, key=lambda p: int(p.name))
     pack.count = len(pack.puzzle_keys)
-    for puzzle in pack.puzzles:
-      puzzle.relative_url = '/puzzle/%s' % puzzle.key()
+    for j in xrange(len(pack.puzzles)):
+      puzzle = pack.puzzles[j]
+      puzzle.relative_url = '/puzzle/%i/%i' % (i+1, j+1)
   return packs
 
 
