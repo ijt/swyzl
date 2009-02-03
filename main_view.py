@@ -275,7 +275,7 @@ def WriteTemplate(request, response, template_name, params, mime_type='text/html
   response.out.write(template.render(path, params))
 
 
-urls_to_handlers = [('/', MainPage),
+urls_to_handlers = [('/home', MainPage),  # Use this to generate templates/home_cached.html
                     ('/about', AboutPage),
                     ('/buynow', BuyNowExperiment),
                     ('/done_with_puzzle', DoneWithPuzzle),

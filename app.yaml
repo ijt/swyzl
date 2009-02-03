@@ -3,7 +3,11 @@ version: 7
 runtime: python
 api_version: 1
 
-handlers:
+handlers:    
+- url: /
+  static_files: templates/home_cached.html
+  upload: templates/home_cached.html
+
 - url: /media/(.*)
   static_files: media/\1
   upload: media/(.*)
