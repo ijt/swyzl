@@ -8,7 +8,10 @@ var TAB = 9;
 
 function goBackToIndex() {
   var loc = window.location;
-  var newUrl = 'http://' + loc.hostname + ':' + loc.port;
+  var newUrl = 'http://' + loc.hostname;
+  if (loc.port) {
+    newUrl = newUrl + ':' + loc.port; 
+  }
   window.location = newUrl;
 }
 
