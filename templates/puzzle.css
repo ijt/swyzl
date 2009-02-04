@@ -102,6 +102,10 @@
   margin-bottom: .75em;
 }
 
+#title_div, #short_clue_div {
+  font-size:1.8em;
+}
+
 #long_clue_div {
   margin-bottom: .2em;
 }
