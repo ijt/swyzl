@@ -146,7 +146,7 @@ class MakePuzzleUi(webapp.RequestHandler):
 
 def MakePuzzleTitleForDisplay(puzzle):
   pack = models.GetPackForPuzzle(puzzle)
-  return '%s: %s' % (pack.title, puzzle.name)
+  return '%s, Puzzle %s' % (pack.title, puzzle.name)
 
 
 class PlayPuzzle(webapp.RequestHandler):
