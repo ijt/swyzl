@@ -18,6 +18,16 @@ import swyzl_models as models
 import utils
 
 
+class FakePuzzle(object):
+  def __init__(self):
+    self.short_clue = 'A is B'
+    self.cipher_text = 'A'
+    self.solution_text = 'B'
+    self.key = 'puzzle_test'
+
+FAKE_PUZZLE = FakePuzzle()
+
+
 class PuzzleViewer(object):
   def ShowPuzzle(self, title, puzzle, request, response):
     """Renders a puzzle UI to the HTTP response."""
@@ -151,6 +161,11 @@ class PlayPuzzle(webapp.RequestHandler):
       self.response.out.write('Puzzle not found!')
 
 
+class PuzzleTest(webapp.RequestHandler):
+  def get(self):
+    puzzle_viewer.ShowPuzzle('Easy Puzzle', FAKE_PUZZLE, self.request, self.response)
+
+
 class PlayPuzzleOfTheDay(webapp.RequestHandler):
   def get(self):
     try:
@@ -203,7 +218,7 @@ class DoneWithPuzzle(webapp.RequestHandler):
   def get(self):
     puzzle_id = self.request.get('puzzle_id')
     user_solution = self.request.get('solution').upper()
-    puzzle = db.get(puzzle_id)
+    puzzle = (puzzle_id == 'puzzle_test') and FAKE_PUZZLE or db.get(puzzle_id)
     # Remove spaces since the user solution also has its spaces removed.
     # Also remove punctuation.
     real_solution = ''.join(c for c in puzzle.solution_text if c.isalpha())
@@ -287,6 +302,7 @@ urls_to_handlers = [('/home', MainPage),  # Use this to generate templates/home_
                     ('/make_puzzle_ui', MakePuzzleUi),  # makes a puzzle ui
                     ('/potd', PlayPuzzleOfTheDay),
                     ('/puzzle/(\d+)/(\d+)', PlayPuzzle),
+                    ('/puzzle_test', PuzzleTest),
                     ('/tips', TipsPage),
                     ('/test_make_puzzle', TestMakePuzzle),
                     
