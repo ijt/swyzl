@@ -44,6 +44,7 @@ class TestWithTwoPuzzlesAndOnePack(unittest.TestCase):
     self.puzzle2.put()
     self.puzzle1.put()
     self.puzzle_pack = models.PackOfPuzzles(
+        index=1,
         title=pack_title,
         puzzle_keys=[self.puzzle2.key(), self.puzzle1.key()])
     self.puzzle_pack.put()
@@ -124,6 +125,6 @@ class TestWithTwoPuzzlesAndOnePack(unittest.TestCase):
       self.assertEqual(expected.key(), puzzle.key())
   
   def testGetPack(self):
-    pack = models.GetPack(index='1')
+    pack = models.GetPack(index=1)
     self.assertEqual(self.puzzle_pack.key(), pack.key())
     

@@ -11,6 +11,7 @@ class NotFoundError(Exception):
 class PackOfPuzzles(db.Model):
   """Container for all the puzzles in one of Julia's books."""
   thumbnail_url_part = db.StringProperty()  # the part after images/
+  index = db.IntegerProperty()
   title = db.StringProperty()
   puzzle_keys = db.ListProperty(db.Key)
   introduction = db.TextProperty()
@@ -59,15 +60,13 @@ def GetAllPuzzlePacks(max_count=100):
   Args:
     max_count: (optional int) how many packs to get at most
   """
-  packs = PackOfPuzzles.all().order('title').fetch(max_count)
-  for i in xrange(len(packs)):
-    pack = packs[i]
+  packs = PackOfPuzzles.all().order('index').fetch(max_count)
+  for pack in packs:
     pack.puzzles = [db.get(key) for key in pack.puzzle_keys]
     pack.puzzles = sorted(pack.puzzles, key=lambda p: int(p.name))
     pack.count = len(pack.puzzle_keys)
-    for j in xrange(len(pack.puzzles)):
-      puzzle = pack.puzzles[j]
-      puzzle.relative_url = '/puzzle/%i/%i' % (i+1, j+1)
+    for puzzle in pack.puzzles:
+      puzzle.relative_url = '/puzzle/%s/%s' % (pack.index, puzzle.name)
   return packs
 
 
@@ -99,5 +98,4 @@ def GetPuzzle(pack_title, name):
 
 def GetPack(index):
   """Returns a Pack for a given 1-based index."""
-  packs = db.GqlQuery("SELECT * FROM PackOfPuzzles ORDER BY title DESC")
-  return packs[int(index) - 1]
+  return PackOfPuzzles.gql('WHERE index = :index', index=int(index)).get()

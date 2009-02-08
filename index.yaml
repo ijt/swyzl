@@ -16,7 +16,7 @@ indexes:
   - name: date
     direction: desc
 
-# Used 5 times in query history.
+# Used 10 times in query history.
 - kind: PackOfPuzzles
   properties:
   - name: title
