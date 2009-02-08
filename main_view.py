@@ -151,9 +151,8 @@ def MakePuzzleTitleForDisplay(puzzle):
 
 class PlayPuzzle(webapp.RequestHandler):
   def get(self, book_index, puzzle_index):
-    [book_index, puzzle_index] = [int(i) - 1 for i in [book_index, puzzle_index]]
-    books = db.GqlQuery("SELECT * FROM PackOfPuzzles ORDER BY title DESC")
-    puzzle = db.get(books[book_index].puzzle_keys[puzzle_index])
+    pack_title = models.GetPack(index=book_index).title
+    puzzle = models.GetPuzzle(pack_title=pack_title, name=puzzle_index)
     if puzzle:
       title = MakePuzzleTitleForDisplay(puzzle)
       puzzle_viewer.ShowPuzzle(title, puzzle, self.request, self.response)
@@ -165,15 +164,6 @@ class PuzzleTest(webapp.RequestHandler):
   def get(self):
     puzzle_viewer.ShowPuzzle('Easy Puzzle', FAKE_PUZZLE, self.request, self.response)
 
-
-class PlayPuzzleOfTheDay(webapp.RequestHandler):
-  def get(self):
-    try:
-      puzzle = models.GetPuzzleOfTheDay()
-      title = MakePuzzleTitleForDisplay(puzzle)
-      puzzle_viewer.ShowPuzzle(title, puzzle, self.request, self.response)
-    except models.NotFoundError:
-      self.response.out.write('There\'s no puzzle today. :/')
 
 class MakePuzzle(webapp.RequestHandler):
   def get(self):
@@ -267,24 +257,6 @@ class ClearPacks(webapp.RequestHandler):
     self.response.out.write('Deleted %s packs.' % len(packs))
 
 
-class SetPuzzleOfTheDay(webapp.RequestHandler):
-  def get(self, puzzle_key_str):
-    models.SetPuzzleOfTheDay(db.get(db.Key(puzzle_key_str)))
-    self.response.out.write('Set puzzle of the day to %s' % puzzle_key_str)
-
-
-class SetPuzzleOfTheDayToFirst(webapp.RequestHandler):
-  """Sets the puzzle of the day to the first puzzle in the db.
-  
-  This is just a way to have some content up instead of an "empty" message.
-  """
-  def get(self):
-    puzzle = models.Puzzle.all().get()
-    models.SetPuzzleOfTheDay(puzzle)
-    msg = 'Set puzzle of the day to %s: %s' % (puzzle.pack_title, puzzle.name)
-    self.response.out.write(msg)
-
-
 def WriteTemplate(request, response, template_name, params, mime_type='text/html'):
   '''Shows a template with some parameters'''
   path = os.path.join(os.path.dirname(__file__), 'templates/%s' % template_name)  
@@ -300,7 +272,6 @@ urls_to_handlers = [('/home', MainPage),  # Use this to generate templates/home_
                     ('/make', MakePuzzle),
                     ('/js_for_make', JsForMake),
                     ('/make_puzzle_ui', MakePuzzleUi),  # makes a puzzle ui
-                    ('/potd', PlayPuzzleOfTheDay),
                     ('/puzzle/(\d+)/(\d+)', PlayPuzzle),
                     ('/puzzle_test', PuzzleTest),
                     ('/tips', TipsPage),
@@ -309,8 +280,6 @@ urls_to_handlers = [('/home', MainPage),  # Use this to generate templates/home_
                     # Admin:
                     ('/clear_puzzles', ClearPuzzles),
                     ('/clear_packs', ClearPacks),
-                    ('/set_potd/(.*)', SetPuzzleOfTheDay),
-                    ('/set_potd_to_first', SetPuzzleOfTheDayToFirst),
 
                     ('.*', NotFound)]
 application = webapp.WSGIApplication(urls_to_handlers, debug=True)

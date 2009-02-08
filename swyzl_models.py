@@ -12,7 +12,7 @@ class PackOfPuzzles(db.Model):
   """Container for all the puzzles in one of Julia's books."""
   thumbnail_url_part = db.StringProperty()  # the part after images/
   title = db.StringProperty()
-  puzzle_keys = db.ListProperty(db.Key)  # fixme: should be puzzle_keys
+  puzzle_keys = db.ListProperty(db.Key)
   introduction = db.TextProperty()
   price_cents = db.IntegerProperty()
 
@@ -31,11 +31,6 @@ class UserInfo(db.Model):
   user = db.UserProperty()
   purchased_pack_keys = db.ListProperty(db.Key)
   solved_puzzle_keys = db.ListProperty(db.Key)
-
-
-class PuzzleOfTheDay(db.Model):
-  """There should only be one object of this type."""
-  puzzle = db.ReferenceProperty(Puzzle)
 
 
 def AddOrphanPuzzlesToTheirPacks(orphans):
@@ -96,17 +91,13 @@ def GetPackForPuzzle(puzzle):
   raise ValueError(msg)
 
 
-def GetPuzzleOfTheDay():
-  """Returns the Puzzle for today."""
-  try:
-    [potd] = PuzzleOfTheDay.all().fetch(1)
-    return db.get(potd.puzzle.key())
-  except ValueError:
-    raise NotFoundError('There is no puzzle of the day')
+def GetPuzzle(pack_title, name):
+  query = Puzzle.gql('WHERE pack_title = :pack_title AND name = :name',
+    pack_title=pack_title, name=name)
+  return query.get()
 
 
-def SetPuzzleOfTheDay(puzzle):
-  for potd in PuzzleOfTheDay.all().fetch(100):
-    potd.delete()
-  potd = PuzzleOfTheDay(puzzle=puzzle.key())
-  potd.put()
+def GetPack(index):
+  """Returns a Pack for a given 1-based index."""
+  packs = db.GqlQuery("SELECT * FROM PackOfPuzzles ORDER BY title DESC")
+  return packs[int(index) - 1]
