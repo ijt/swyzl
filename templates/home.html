@@ -14,7 +14,7 @@
   <h1>Swyzl</h1>
   <br/>
   <div class="pack_set">
-    <h2>Choose a Cryptogram</h2>
+    <h2>Cryptograms</h2>
     {% for pack in packs %}
       <div class="pack">
         <select name="{{ pack.title }}" onChange="goToPuzzle(this.options[this.selectedIndex].value)">
