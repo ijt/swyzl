@@ -4,16 +4,10 @@
   {% include "head" %}  
   <style>
     h2 { margin-top:.3em;}
-    li {
-      float:left;
-      text-align:right;
-      font-size:4em;
-      margin-bottom:.25em;
-      margin-top:.25em;
-      margin-left:.7em;
-      min-width:1.3em;
+    select {
+      font-size:2.5em;
+      width:70%;
     }
-    div.float_cleaner { clear:both; }
     *.link_to_tips { font-size:2.5em; }
   </style>
   <title>Swyzl</title>
@@ -22,19 +16,18 @@
   <h1>Swyzl</h1>
   <br/>
   <div class="pack_set">
+    <h2>Choose a Cryptogram</h2>
   {% for pack in packs %}
     <div class="pack">
-      <h2>{{ pack.title }}</h2>
       <div class="table_of_contents">
-        <ul>
-        {% for puzzle in pack.puzzles %}
-          <li><a href="{{ puzzle.relative_url }}">{{ puzzle.name }}</a></li>
-        {% endfor %}
-        </ul>
-        <div class="float_cleaner"></div>
+        <select name="{{ pack.title }}" onChange="goToPuzzle(this.options[this.selectedIndex].value)">
+          <option value="">{{ pack.title }}</option>
+          {% for puzzle in pack.puzzles %}
+            <option value="{{ puzzle.relative_url }}">{{ puzzle.name }}</option>
+          {% endfor %}
+        </select>
       </div>
     </div>
-    <br/>
   {% endfor %}
   </div>
   <br/>
@@ -50,5 +43,12 @@
   <div>
     <a href="/about">Credits</a> | <a href="mailto:issac.trotts+swyzl@gmail.com">Feedback</a>
   </div>
+  
+  <script type="text/javascript">{% include "utils.js" %}</script>
+  <script type="text/javascript">
+    function goToPuzzle(relativeUrl) {
+      window.location = getBaseUrl(window.location) + relativeUrl;
+    }
+  </script>
 </body>
 </html>
