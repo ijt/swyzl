@@ -4,10 +4,8 @@
   {% include "head" %}  
   <style>
     h2 { margin-top:.3em;}
-    select {
-      font-size:2.5em;
-      width:70%;
-    }
+    div.pack { margin-top:0.4em; }
+    select { font-size:1.5em; }
     *.link_to_tips { font-size:2.5em; }
   </style>
   <title>Swyzl</title>
@@ -17,9 +15,8 @@
   <br/>
   <div class="pack_set">
     <h2>Choose a Cryptogram</h2>
-  {% for pack in packs %}
-    <div class="pack">
-      <div class="table_of_contents">
+    {% for pack in packs %}
+      <div class="pack">
         <select name="{{ pack.title }}" onChange="goToPuzzle(this.options[this.selectedIndex].value)">
           <option value="">{{ pack.title }}</option>
           {% for puzzle in pack.puzzles %}
@@ -27,8 +24,7 @@
           {% endfor %}
         </select>
       </div>
-    </div>
-  {% endfor %}
+    {% endfor %}
   </div>
   <br/>
   <h2>Introduction</h2>
@@ -47,7 +43,9 @@
   <script type="text/javascript">{% include "utils.js" %}</script>
   <script type="text/javascript">
     function goToPuzzle(relativeUrl) {
-      window.location = getBaseUrl(window.location) + relativeUrl;
+      if (relativeUrl) {
+        window.location = getBaseUrl(window.location) + relativeUrl;
+      }
     }
   </script>
 </body>
