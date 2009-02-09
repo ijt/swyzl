@@ -165,24 +165,6 @@ class PuzzleTest(webapp.RequestHandler):
     puzzle_viewer.ShowPuzzle('Easy Puzzle', FAKE_PUZZLE, self.request, self.response)
 
 
-class MakePuzzle(webapp.RequestHandler):
-  def get(self):
-    WriteTemplate(self.request, self.response, 'make_puzzle_body.html', {})
-
-
-class JsForMake(webapp.RequestHandler):
-  def get(self):
-    tags = models.Tag.all()
-    tag_texts = sorted([tag.text for tag in tags])
-    initial_encoding_map = utils.MakeRandomLetterMap()
-    params = {
-      'tags': [str(x) for x in tag_texts],
-      'initial_encoding_map': initial_encoding_map
-    }
-    WriteTemplate(self.request, self.response, 'make_puzzle.js', params,
-                  mime_type="text/plain")
-    
-
 class SubmitNewPuzzleHandler(webapp.RequestHandler):
   def get(self):
     try:
@@ -230,11 +212,6 @@ class BuyNowExperiment(webapp.RequestHandler):
     WriteTemplate(self.request, self.response, 'bn.html', {})
 
 
-class TestMakePuzzle(webapp.RequestHandler):
-  def get(self):
-    WriteTemplate(self.request, self.response, 'make_puzzle_test.html', {})
-
-
 class NotFound(webapp.RequestHandler):
   def get(self):
     self.response.out.write("There's nothing to see here.  How 'bout a "
@@ -269,13 +246,10 @@ urls_to_handlers = [('/home', MainPage),  # Use this to generate templates/home_
                     ('/buynow', BuyNowExperiment),
                     ('/done_with_puzzle', DoneWithPuzzle),
                     ('/encrypt', Encrypt),
-                    ('/make', MakePuzzle),
-                    ('/js_for_make', JsForMake),
                     ('/make_puzzle_ui', MakePuzzleUi),  # makes a puzzle ui
                     ('/puzzle/(\d+)/(\d+)', PlayPuzzle),
                     ('/puzzle_test', PuzzleTest),
                     ('/tips', TipsPage),
-                    ('/test_make_puzzle', TestMakePuzzle),
                     
                     # Admin:
                     ('/clear_puzzles', ClearPuzzles),
