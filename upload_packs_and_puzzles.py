@@ -70,7 +70,7 @@ def Main(hostname, pack_filenames):
 
   if 'localhost' in hostname:
     print '\nUpdating cached home page.'
-    DoSystemCall('wget localhost:8080/home -O templates/home_cached.html')
+    DoSystemCall('./update_home_cache')
 
 
 if __name__ == '__main__':
