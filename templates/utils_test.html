@@ -1,4 +1,3 @@
-{% include "doctype" %}
 <!-- You can run this test by just opening this file in your browser.
      It doesn't have to be served by a server. -->
 <html>
@@ -82,6 +81,11 @@
       assertEqual('conflict', elt.getAttribute('class'));
       elt.removeClassName('conflict');
       assertEqual('', elt.getAttribute('class'));
+    }},
+    
+    testGetBaseUrl: function() { with(this) {
+      assertEqual('http://foo', getBaseUrl({hostname: 'foo'}));
+      assertEqual('http://bar:80', getBaseUrl({hostname: 'bar', port: 80}));
     }}
   }, "testlog");
 // ]]>

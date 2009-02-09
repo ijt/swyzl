@@ -6,13 +6,21 @@ var LEFT_ARROW = 37;
 var RIGHT_ARROW = 39;
 var TAB = 9;
 
-function goBackToIndex() {
-  var loc = window.location;
-  var newUrl = 'http://' + loc.hostname;
+/**
+ * Returns the base url.
+ *
+ * @param loc: window.location
+ */
+function getBaseUrl(loc) {
+  var baseUrl = 'http://' + loc.hostname;
   if (loc.port) {
-    newUrl = newUrl + ':' + loc.port; 
+    baseUrl = baseUrl + ':' + loc.port; 
   }
-  window.location = newUrl;
+  return baseUrl;
+}
+
+function goBackToIndex() {
+  window.location = getBaseUrl(window.location);
 }
 
 function isLetterCode(code) {
