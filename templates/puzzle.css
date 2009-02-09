@@ -83,12 +83,7 @@
   min-height: 1em;
 }
 
-#alert_div {
-  margin-top: .75em;
-  min-height: .625em;
-}
-
-#done_button_div, #alert_div, #long_clue_div {
+#done_button_div, #long_clue_div {
   clear: left;
 }
 
@@ -102,7 +97,7 @@
   margin-bottom: .75em;
 }
 
-#title_div, #short_clue_div, #alert_div {
+#title_div, #short_clue_div {
   font-size:1.8em;
 }
 

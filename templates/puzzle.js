@@ -24,12 +24,10 @@ function onDone(puzzleId) {
                                  parameters: params,
                                  onComplete: function(request) {
                                    if (request.responseText == 'Yes!') {
-                                     $('alert_div').innerHTML = 'You guessed it!';
-                                     setTimeout("goBackToIndex();", 1000);
+                                     alert('You got it!');
+                                     window.location = getBaseUrl(window.location) + '/';
                                    } else {
-                                     // Complain.
-                                     $('alert_div').innerHTML = request.responseText;
-                                     setTimeout("$('alert_div').innerHTML = '';", 1500);
+                                     alert(request.responseText);
                                    }
                                  }});
 }
