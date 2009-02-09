@@ -93,11 +93,11 @@
   font-weight:bold;
 }
 
-#short_clue_div {
+#intro {
   margin-bottom: .75em;
 }
 
-#title_div, #short_clue_div {
+#title_div, #short_clue_div, #intro {
   font-size:1.8em;
 }
 

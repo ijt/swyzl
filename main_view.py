@@ -29,11 +29,12 @@ FAKE_PUZZLE = FakePuzzle()
 
 
 class PuzzleViewer(object):
-  def ShowPuzzle(self, title, puzzle, request, response):
+  def ShowPuzzle(self, intro, title, puzzle, request, response):
     """Renders a puzzle UI to the HTTP response."""
     cipher_words = puzzle.cipher_text.split(' ')
     word_htmls = utils.GenerateWordHtmls(cipher_words)
-    params = {'puzzle': puzzle, 'word_htmls': word_htmls, 'title': title}
+    params = {'puzzle': puzzle, 'word_htmls': word_htmls, 'title': title,
+      'intro': intro}
     WriteTemplate(request, response, 'puzzle.html', params)    
 
 
@@ -151,11 +152,11 @@ def MakePuzzleTitleForDisplay(puzzle):
 
 class PlayPuzzle(webapp.RequestHandler):
   def get(self, book_index, puzzle_index):
-    pack_title = models.GetPack(index=book_index).title
-    puzzle = models.GetPuzzle(pack_title=pack_title, name=puzzle_index)
+    pack = models.GetPack(index=book_index)
+    puzzle = models.GetPuzzle(pack_title=pack.title, name=puzzle_index)
     if puzzle:
       title = MakePuzzleTitleForDisplay(puzzle)
-      puzzle_viewer.ShowPuzzle(title, puzzle, self.request, self.response)
+      puzzle_viewer.ShowPuzzle(pack.introduction, title, puzzle, self.request, self.response)
     else:
       self.response.out.write('Puzzle not found!')
 

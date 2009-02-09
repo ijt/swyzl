@@ -19,6 +19,9 @@
           Clue: {{ puzzle.short_clue }}
         {% endif %}
       </div>
+      <div id="intro">
+        {{ intro }}
+      </div>
       <div id="words_div">
         {% for word_html in word_htmls %}
           {{ word_html }}

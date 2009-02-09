@@ -13,9 +13,10 @@ class MockPuzzleViewer(object):
   def __init__(self):
     self.puzzle = None
     self.title = None
-  def ShowPuzzle(self, title, puzzle, request, response):
+  def ShowPuzzle(self, intro, title, puzzle, request, response):
     self.puzzle = puzzle
     self.title = title
+    self.intro = intro
 
 
 class TestWithNoData(unittest.TestCase):
