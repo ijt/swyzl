@@ -1,7 +1,5 @@
 #!/usr/bin/env python2.4
-import getopt
 import re
-import sys
 import utils
 
 
