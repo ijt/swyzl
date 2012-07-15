@@ -1,6 +1,4 @@
-#!/usr/bin/env python
-
-'''Puts orphaned puzzles into packs.'''
+'''Handles the /orphans action.'''
 
 import swyzl_models as models
 
