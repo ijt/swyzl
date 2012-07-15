@@ -3,8 +3,6 @@ import swyzl_models as models
 
 import unittest
 
-from google.appengine.ext import db
-
 
 class MockOutfile(object):
   """Mock for sys.stdout and other output streams."""
