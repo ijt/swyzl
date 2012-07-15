@@ -1,4 +1,0 @@
-http://appengineguy.com/2008/06/proper-unit-testing-of-app-enginedjango.html
-  The key thing is: from google.appengine.api import datastore_file_stub   and so on.
-http://jqueryminute.com/blog/set-focus-to-the-next-input-field-with-jquery/
-  I'm not using jquery though, and this example is a bit opaque.
