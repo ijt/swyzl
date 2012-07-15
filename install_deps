@@ -1,0 +1,6 @@
+#!/bin/bash
+
+for pkg in python-{mysqldb,imaging}; do
+	sudo apt-get install $pkg
+done
+
