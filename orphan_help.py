@@ -1,6 +1,8 @@
-import swyzl_models as models
+#!/usr/bin/env python
 
-from google.appengine.ext import db
+'''Puts orphaned puzzles into packs.'''
+
+import swyzl_models as models
 
 
 def Main(out):
@@ -12,3 +14,4 @@ def Main(out):
 if __name__ == '__main__':
   import sys
   Main(sys.stdout)
+
