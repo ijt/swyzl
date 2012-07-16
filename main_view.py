@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 
-import cgi
 import os
-import random
 import re
 import urllib
 
@@ -13,6 +11,7 @@ from google.appengine.api import users
 from google.appengine.ext import db
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import template
+from google.appengine.api import memcache
 
 import swyzl_models as models
 import utils
@@ -78,7 +77,19 @@ def SubmitNewPuzzle(clear_text, map_as_string, tags_string, short_clue):
       tag_in_db = models.Tag(text=tag_text, num_times_used=1,
                                   puzzles=[puzzle.key()])
     tag_in_db.put()
-  
+
+
+def UpdatePacksInMemcache():
+  packs = models.GetAllPuzzlePacks()
+  memcache.add(key="packs", value=packs, time=24*60*60)
+  return packs
+
+
+class UpdatePacksInMemcacheHandler(webapp.RequestHandler):
+  def get(self):
+    UpdatePacksInMemcache()
+    self.response.out.write('Updated memcache.')
+
 
 class MainPage(webapp.RequestHandler):
   def GetUserInfo(self):
@@ -102,7 +113,7 @@ class MainPage(webapp.RequestHandler):
   def get(self):
     """Handles the HTTP get request."""
     user, url, url_link_text = self.GetUserInfo()
-    packs = models.GetAllPuzzlePacks()
+    packs = memcache.get('packs') or UpdatePacksInMemcache()
     params = {
       'log_inout_url': url.replace('&', '&amp;'),
       'log_inout_link_text': url_link_text,
@@ -243,6 +254,7 @@ def WriteTemplate(request, response, template_name, params, mime_type='text/html
 
 
 urls_to_handlers = [('/', MainPage),
+                    ('/update', UpdatePacksInMemcacheHandler),
                     ('/about', AboutPage),
                     ('/buynow', BuyNowExperiment),
                     ('/done_with_puzzle', DoneWithPuzzle),
