@@ -32,9 +32,7 @@
           {{ puzzle.long_clue }}
         {% endif %}
       </div>
-      <div id="done_button_div">
-        <a href="javascript:onDone('{{ puzzle.key }}')">Done</a>
-      </div>
+      <a class="done_button" href="javascript:onDone('{{ puzzle.key }}')">Done</a>
     </div>
     
     <script type="text/javascript" charset="utf-8" src="/media/scriptaculous-js-1.8.1/lib/prototype.js"></script>
