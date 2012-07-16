@@ -10,4 +10,7 @@ To run the application on your local machine, make sure Google AppEngine is
 installed and run
 
     $GOOGLE_APP_ENGINE/dev_appserver.py .
+    ./upload_packs_and_puzzles.py
+
+Then point your browser to localhost:8080.
 
