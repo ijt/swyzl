@@ -3,7 +3,6 @@
 <head>
   {% include "head" %}  
   <style>
-    h2 { margin-top:10px;}
     div.pack { margin-top:0.3em; }
     select {
       margin-left:0.4em;
@@ -17,9 +16,15 @@
 </head>
 <body>
   <h1>Swyzl</h1>
-  <br/>
+
+  <div id="introduction">
+    <h2>Introduction</h2>
+    Welcome to Julia's handmade cryptos, a.k.a. Swyzl! To learn about cryptograms and how to solve them, check out our <a href="tips">tips</a>.
+  </div>
+
   <div class="pack_set">
     <h2>Cryptograms</h2>
+    Choose one of the links to start a puzzle:
     {% for pack in packs %}
       <div class="pack">
         <h3>{{ pack.title }}</h3>
@@ -29,21 +34,8 @@
       </div>
     {% endfor %}
   </div>
-  <div class="unfloat"></div>
-  <div id="introduction">
-    <h2>Introduction</h2>
-    <p>Julia was puzzled by many things, but not by puzzles. She would arrange the letters in her mind as 
-  	she lay in bed, then spoke them to her computer once she arose. None of the puzzles here were 
-  	machine generated. They are the thoughtful result of an active mind, keen on her task to the very end. </p>
-    <br/>
-    <p>We hope that you enjoy solving them as much as she enjoyed writing them. Choose from the books above to get started.</p>
-    <br/> 
-    <p>If you aren't sure what a Cryptogram is, check out our <a href="tips">tips</a>.</p>
-    <br/>
-    <div>
-      <a href="/about">Credits</a> | <a href="mailto:issac.trotts+swyzl@gmail.com">Feedback</a>
-    </div>
-  </div>
+
+  <div><a href="/about">Credits</a> | <a href="mailto:issac.trotts+swyzl@gmail.com">Feedback</a></div>
   
   <script type="text/javascript">{% include "utils.js" %}</script>
   <script type="text/javascript">
@@ -53,6 +45,8 @@
       }
     }
   </script>
+
   {% include "analytics" %}
+
 </body>
 </html>
