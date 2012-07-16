@@ -70,9 +70,9 @@
     testGetConflictLetters: function() { with(this) {
       assertEqual('{}', Object.toJSON(getConflictLetters({})));
       assertEqual('{}', Object.toJSON(getConflictLetters({'a': 'b'})));
-      assertEqual('{"a": true}', Object.toJSON(getConflictLetters({'a': 'a', 'b': 'a'})));
+      assertEqual('{"a":true}', Object.toJSON(getConflictLetters({'a': 'a', 'b': 'a'})));
       assert('a' in getConflictLetters({'a': 'a', 'b': 'a'}));
-      assertEqual('{"a": true, "b": true}',
+      assertEqual('{"a":true,"b":true}',
                   Object.toJSON(getConflictLetters({'a': 'a', 'b': 'a', 'c': 'b', 'd': 'b'})));
     }},
 
