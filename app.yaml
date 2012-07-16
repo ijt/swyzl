@@ -16,9 +16,6 @@ handlers:
   static_files: images/\1
   upload: images/(.*)
 
-- url: /test.*
-  script: gaeunit.py
-
 # This URL is for use with the CSV bulk uploader.
 # http://code.google.com/appengine/articles/bulkload.html
 - url: /load_puzzles
