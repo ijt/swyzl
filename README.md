@@ -1,16 +1,20 @@
-This project contains all the files for Swyzl on App Engine (swyzl.appspot.com), plus admin scripts.
+Swyzl: a cryptogram puzzle app on App Engine (swyzl.appspot.com)
 
 Development
 ===========
-To run unit tests, do
+To run Python unit tests, do
     
-    ./run_tests.
+    ./run_tests
 
 To run the application on your local machine, make sure Google AppEngine is
 installed and run
 
-    $GOOGLE_APP_ENGINE/dev_appserver.py .
+    $APP_ENGINE_DIR/dev_appserver.py .
     ./upload_packs_and_puzzles.py
 
 Then point your browser to localhost:8080.
+
+To run Javascript unit tests, point your browser to
+    
+    ./templates/utils_test.html
 
