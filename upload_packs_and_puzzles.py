@@ -70,7 +70,7 @@ def Main(hostname, pack_filenames):
 
   if 'localhost' in hostname:
     print '\nUpdating cached home page.'
-    DoSystemCall('./update_home_cache')
+    DoSystemCall('./update_home_cache %s' % hostname)
 
 
 if __name__ == '__main__':
