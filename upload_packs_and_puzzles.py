@@ -68,10 +68,6 @@ def Main(hostname, pack_filenames):
   # Add the puzzles to their packs in the datastore.
   urllib.urlopen(host_url + '/orphans')  
 
-  if 'localhost' in hostname:
-    print '\nUpdating cached home page.'
-    DoSystemCall('./update_home_cache %s' % hostname)
-
 
 if __name__ == '__main__':
   try:
