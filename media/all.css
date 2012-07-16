@@ -7,8 +7,8 @@ ul, p, h1, h2, h3, h4, h5{
 	margin:0;
 	padding:0;
 }
-h1 { text-align:center; font-size:4em; color:#6f7ea6; }
-h2 { font-size:3em; color:#d26f2c; font-weight:normal; }
+h1 { text-align:center; font-size:3em; color:#6f7ea6; }
+h2 { font-size:2em; color:#d26f2c; font-weight:normal; margin-top:0.5em }
 ul, li { list-style:none; }
 th, td {
     font-size: 1em;

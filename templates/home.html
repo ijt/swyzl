@@ -3,7 +3,8 @@
 <head>
   {% include "head" %}  
   <style>
-    div.pack { margin-top:0.3em; }
+    div.pack { margin-top:1em; }
+    div#footer { margin-top:1em }
     select {
       margin-left:0.4em;
       font-size:1.5em;
@@ -22,9 +23,9 @@
     Welcome to Julia's handmade cryptos, a.k.a. Swyzl! To learn about cryptograms and how to solve them, check out our <a href="tips">tips</a>.
   </div>
 
-  <div class="pack_set">
+  <div id="pack_set">
     <h2>Cryptograms</h2>
-    Choose one of the links to start a puzzle:
+    Choose one of the links to start a puzzle.
     {% for pack in packs %}
       <div class="pack">
         <h3>{{ pack.title }}</h3>
@@ -35,7 +36,7 @@
     {% endfor %}
   </div>
 
-  <div><a href="/about">Credits</a> | <a href="mailto:issac.trotts+swyzl@gmail.com">Feedback</a></div>
+  <div id="footer"><a href="/about">Credits</a> | <a href="mailto:issac.trotts+swyzl@gmail.com">Feedback</a></div>
   
   <script type="text/javascript">{% include "utils.js" %}</script>
   <script type="text/javascript">
