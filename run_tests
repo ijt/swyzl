@@ -1,4 +1,5 @@
 #!/bin/bash
+# Runs tests that don't need to be run from the browser.
 
 set -o errexit
 
