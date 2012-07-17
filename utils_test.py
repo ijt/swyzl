@@ -2,16 +2,16 @@ import utils
 import unittest
 
 class TestUtils(unittest.TestCase):
-  
+
   def assertDictEqual(self, a, b):
     for key in a:
       self.assertEqual(a[key], b[key])
     for key in b:
       self.assertEqual(b[key], a[key])
-  
+
   def testMakeEncryptionMap(self):
     self.assertDictEqual({}, utils.MakeEncryptionMap('', ''))
-    
+
     self.assertDictEqual({'a': 'b'}, utils.MakeEncryptionMap('a', 'b'))
     self.assertDictEqual({'a': 'b'}, utils.MakeEncryptionMap('aa', 'bb'))
     self.assertDictEqual({'a': 'b', 'b': 'c'}, utils.MakeEncryptionMap('ab', 'bc'))
@@ -24,13 +24,13 @@ class TestUtils(unittest.TestCase):
     for x in [' ', ',', "'", '.']:
       self.assertDictEqual({}, utils.MakeEncryptionMap(x, x))
       self.assertRaises(ValueError, utils.MakeEncryptionMap, x, 'a')
-   
+
   def testCheckPuzzle(self):
     utils.CheckPuzzle('', '')
     utils.CheckPuzzle('a', 'a')
     utils.CheckPuzzle('a', 'b')
     utils.CheckPuzzle('ab', 'ab')
-    utils.CheckPuzzle('ab', 'bc')    
+    utils.CheckPuzzle('ab', 'bc')
 
     # Spaces, commas, apostrophes, and periods should map to themselves.
     for x in [' ', ',', "'", '.']:
@@ -60,7 +60,7 @@ class TestUtils(unittest.TestCase):
     my_map = utils.MakeRandomLetterMapForLettersIn(message)
     self.assertEquals(25, len(my_map))
     self.assertEquals(25, len(set(my_map.values())))
-    self.assertEquals(25, len(set(my_map.keys())))    
+    self.assertEquals(25, len(set(my_map.keys())))
 
   def testConvertStringToEncodingMap(self):
     self.assertDictEqual({}, utils.ConvertStringToEncodingMap(''))

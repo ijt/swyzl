@@ -10,12 +10,12 @@ class ParsePuzzlePackTestCase(unittest.TestCase):
 
   def testOnOneGoodPuzzle(self):
     file_string = '''
-    
+
     1
     Z is E.
-    I'm feeling puzzled. 
+    I'm feeling puzzled.
     J'n gzzmjoh qvaamze.
-    
+
     '''
     [puzzle] = pack_parsing.ParseString(file_string)
     self.assertEqual('1', puzzle['name'])
@@ -26,14 +26,14 @@ class ParsePuzzlePackTestCase(unittest.TestCase):
   def testOnTwoGoodPuzzles(self):
     file_string = '''
     # This is a comment.
-    
+
     1
     Z is E.
-    I'm feeling puzzled. 
+    I'm feeling puzzled.
     J'n gzzmjoh qvaamze.
 
     # Here's another comment.
-        
+
     2
     H is G
     Go team!
@@ -51,10 +51,10 @@ class ParsePuzzlePackTestCase(unittest.TestCase):
                  'cipher_text': 'Hp sfbn!'}
     self.assertEqual(expected1, puzzle1)
     self.assertEqual(expected2, puzzle2)
-  
+
   def testWhereOnePuzzleHasAnError(self):
     file_string = '''
-    
+
     2
     H is G
     Go team!
@@ -62,9 +62,9 @@ class ParsePuzzlePackTestCase(unittest.TestCase):
 
     1
     Z is E.
-    I'm feeling puzzled. 
+    I'm feeling puzzled.
     J'n gyzmjoh qvaamfe.
-        
+
     '''
     try:
       pack_parsing.ParseString(file_string)
@@ -103,7 +103,7 @@ class ParsePuzzlePackTestCase(unittest.TestCase):
   def testEscapeCsvFieldOnStringContainingQuoteAtBeginning(self):
     # This requires surrounding the whole string in quotes.
     self.assertEqual('"""a""b"', pack_parsing.EscapeCsvField('"a"b'))
-    
+
   def testEscapeCsvFieldOnStringContainingQuotesAtBeginningAndEnd(self):
     self.assertEqual('"""a"""', pack_parsing.EscapeCsvField('"a"'))
 
@@ -120,15 +120,15 @@ class ParsePuzzlePackTestCase(unittest.TestCase):
   def testPutPuzzlesIntoPackFormat(self):
     pack_lines = pack_parsing.PutPuzzlesIntoPackFormat([])
     self.assertEqual([], pack_lines)
-    
+
 
 class TestCaseWithFakePuzzle(unittest.TestCase):
   def setUp(self):
     self.puzzle = {'name': 'Name',
                    'short_clue': 'Clue',
                    'solution_text': 'Soln',
-                   'cipher_text': 'Cipher'}    
-     
+                   'cipher_text': 'Cipher'}
+
   def testPutPuzzlesIntoPackFormat(self):
     pack_lines = pack_parsing.PutPuzzlesIntoPackFormat([self.puzzle])
     self.assertEqual(['Name', 'Clue', 'Soln', 'Cipher'], pack_lines)

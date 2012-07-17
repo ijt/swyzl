@@ -21,7 +21,7 @@ def DoSystemCall(command):
 
 def ConvertPackFilenameToTitle(pack_filename):
   """Converts pack filenames to pack titles.
-  
+
   For example, 'country_capital_cryptos' becomes 'Country Capital Cryptos'.
   """
   basename = pack_filename.split('/')[-1]
@@ -55,7 +55,7 @@ def Main(hostname, pack_filenames):
   # Bulk-upload the pack descriptions.
   command = MakeCommandForUploadingPackDescriptions(hostname)
   DoSystemCall(command)
-  
+
   # Bulk-upload the puzzles.
   for pack_filename in pack_filenames:
     print 'processing ' + pack_filename
@@ -66,7 +66,7 @@ def Main(hostname, pack_filenames):
     DoSystemCall(command)
 
   # Add the puzzles to their packs in the datastore.
-  urllib.urlopen(host_url + '/orphans')  
+  urllib.urlopen(host_url + '/orphans')
 
 
 if __name__ == '__main__':

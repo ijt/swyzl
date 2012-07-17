@@ -55,7 +55,7 @@ def ConvertPuzzleToCsvLine(puzzle, pack_title):
 
 def SwapSolutionAndCipher(puzzle):
   """Interchanges the solution_text and cipher_text fields of a puzzle dict.
-  
+
   This function was written to help with a file where ijt accidentally
   transposed the solution and cipher lines.
   """
@@ -78,13 +78,13 @@ def PutPuzzlesIntoPackFormat(puzzles):
 
 def ConvertPackFileToCsv(filename, title):
   """Converts a pack file to CSV format.
-  
-  For example, given a pack file called presidents.pack, calling 
+
+  For example, given a pack file called presidents.pack, calling
   ConvertPackFileToCsv('presidents.pack', pack_name='Presidential Cryptos')
   will generate a new file called presidents.csv suitable for bulk uploading
   to the server.
   """
-  puzzles = ParseString(open(filename).read())  
+  puzzles = ParseString(open(filename).read())
   lines = [ConvertPuzzleToCsvLine(p, title) for p in puzzles]
   csv_filename = filename.replace('.pack', '') + '.csv'
   outfile = open(csv_filename, 'w')

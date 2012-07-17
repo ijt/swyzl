@@ -12,7 +12,7 @@ class UploadingTestCase(unittest.TestCase):
 
   def testConvertPackFilenameToTitleWithPacksDirPrefix(self):
     self.assertEquals('Foggy Places',
-                      uploading.ConvertPackFilenameToTitle('packs/foggy_places.pack'))    
+                      uploading.ConvertPackFilenameToTitle('packs/foggy_places.pack'))
 
   def testMakeCommandForUploadingPackDescriptions(self):
     cmd = uploading.MakeCommandForUploadingPackDescriptions('localhost:8080')

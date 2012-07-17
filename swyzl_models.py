@@ -45,11 +45,11 @@ def AddOrphanPuzzlesToTheirPacks(orphans):
 
 def GetAllPuzzlePacks(max_count=100):
   """Returns all the puzzle packs with puzzle objects, not just keys.
-     
+
   Each returned pack object has new fields:
     puzzles: list of puzzle objects
     count: how many puzzles
-  
+
   Each puzzle object is augmented with a relative_url field.
 
   Args:

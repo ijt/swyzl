@@ -42,7 +42,7 @@ def MakeEncryptionMap(solution_text, cipher_text):
     c = cipher_text[i]
     if result.has_key(s):
       if result[s] != c:
-        raise ValueError('Character %s maps to both %s and %s.' % 
+        raise ValueError('Character %s maps to both %s and %s.' %
                          (s, result[s], c))
     else:
       if s.isalpha():
@@ -108,7 +108,7 @@ def GenerateWordHtmls(cipher_words):
     word_html += ListToTableRow(top_row)
     word_html += ListToTableRow(bot_row, klass="letter")
     word_html += '</table>'
-    word_htmls.append(word_html)  
+    word_htmls.append(word_html)
   return word_htmls
 
 

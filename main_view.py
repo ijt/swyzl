@@ -6,7 +6,7 @@ import urllib
 
 import wsgiref.handlers
 
-from django.utils import simplejson 
+from django.utils import simplejson
 from google.appengine.api import users
 from google.appengine.ext import db
 from google.appengine.ext import webapp
@@ -34,7 +34,7 @@ class PuzzleViewer(object):
     word_htmls = utils.GenerateWordHtmls(cipher_words)
     params = {'puzzle': puzzle, 'word_htmls': word_htmls, 'title': title,
       'intro': intro}
-    WriteTemplate(request, response, 'puzzle.html', params)    
+    WriteTemplate(request, response, 'puzzle.html', params)
 
 
 def GetDefaultPuzzle():
@@ -45,7 +45,7 @@ def GetDefaultPuzzle():
 
 def SubmitNewPuzzle(clear_text, map_as_string, tags_string, short_clue):
   """Saves a puzzle to the db.
-  
+
   Args:
     clear_text: url encoded secret message.
     map_as_string: like "ABCD" to map A to B and C to D.
@@ -95,14 +95,14 @@ class MainPage(webapp.RequestHandler):
   def GetUserInfo(self):
     user = users.get_current_user()
     user_info = GetInfoForUser(user)
-    if user:      
+    if user:
       # Check to see if the user has auxiliary info for Swyzl, and if not then
       # create it.
       if not user_info:
         user_info = models.UserInfo()
         user_info.user = user
         user_info.put()
-      
+
       url = users.create_logout_url(self.request.uri)
       url_link_text = 'Logout'
     else:
@@ -119,7 +119,7 @@ class MainPage(webapp.RequestHandler):
       'log_inout_link_text': url_link_text,
       'packs': packs,
       'user': user
-    }    
+    }
     WriteTemplate(self.request, self.response, 'home.html', params)
 
 
@@ -142,7 +142,7 @@ def GetTagWithName(name):
 
 def GetInfoForUser(user):
   return models.UserInfo.gql('WHERE user = :1', user).get()
-  
+
 
 class MakePuzzleUi(webapp.RequestHandler):
   def post(self):
@@ -206,7 +206,7 @@ class DoneWithPuzzle(webapp.RequestHandler):
     # Remove spaces since the user solution also has its spaces removed.
     # Also remove punctuation.
     real_solution = ''.join(c for c in puzzle.solution_text if c.isalpha())
-    
+
     if user_solution == real_solution:
       # Add this puzzle to the list of puzzles this user has solved.
       user = users.get_current_user()
@@ -248,7 +248,7 @@ class ClearPacks(webapp.RequestHandler):
 
 def WriteTemplate(request, response, template_name, params, mime_type='text/html'):
   '''Shows a template with some parameters'''
-  path = os.path.join(os.path.dirname(__file__), 'templates/%s' % template_name)  
+  path = os.path.join(os.path.dirname(__file__), 'templates/%s' % template_name)
   response.headers['Content-Type'] = mime_type
   response.out.write(template.render(path, params))
 
@@ -263,7 +263,7 @@ urls_to_handlers = [('/', MainPage),
                     ('/puzzle/(\d+)/(\d+)', PlayPuzzle),
                     ('/puzzle_test', PuzzleTest),
                     ('/tips', TipsPage),
-                    
+
                     # Admin:
                     ('/clear_puzzles', ClearPuzzles),
                     ('/clear_packs', ClearPacks),
