@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# TODO(ijt): change name to datastore.py
 
 from google.appengine.ext import db
 
@@ -19,8 +18,6 @@ class PackOfPuzzles(db.Model):
 
 
 class Puzzle(db.Model):
-  # TODO(ijt): Include the encryption map here and add code to
-  # generate it offline.
   name = db.StringProperty()  # Index of the puzzle in its book
   cipher_text = db.StringProperty(multiline=True)
   solution_text = db.StringProperty(multiline=True)
@@ -49,8 +46,6 @@ def AddOrphanPuzzlesToTheirPacks(orphans):
 def GetAllPuzzlePacks(max_count=100):
   """Returns all the puzzle packs with puzzle objects, not just keys.
      
-  TODO(ijt) see if this too CPU intensive.
-  
   Each returned pack object has new fields:
     puzzles: list of puzzle objects
     count: how many puzzles
@@ -74,7 +69,7 @@ def GetOrphanPuzzles():
   orphans = []
   for puzzle in Puzzle.all().fetch(1000):
     try:
-      _ = GetPackForPuzzle(puzzle)
+      GetPackForPuzzle(puzzle)
     except ValueError:
       orphans.append(puzzle)
   return orphans
@@ -99,3 +94,4 @@ def GetPuzzle(pack_title, name):
 def GetPack(index):
   """Returns a Pack for a given 1-based index."""
   return PackOfPuzzles.gql('WHERE index = :index', index=int(index)).get()
+

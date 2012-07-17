@@ -1,5 +1,4 @@
 from google.appengine.ext import bulkload
-from google.appengine.api import datastore_types
 
 
 class PuzzlesLoader(bulkload.Loader):

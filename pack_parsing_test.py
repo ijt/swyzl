@@ -1,6 +1,8 @@
 #!/usr/bin/env python
+
 import pack_parsing
 import unittest
+
 
 class ParsePuzzlePackTestCase(unittest.TestCase):
   def testEmptyCase(self):

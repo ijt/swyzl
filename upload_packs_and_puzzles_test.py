@@ -7,10 +7,6 @@ class UploadingTestCase(unittest.TestCase):
     self.assertEquals('', uploading.ConvertPackFilenameToTitle(''))
 
   def testConvertPackFilenameToTitle_OnSimpleFilename(self):
-    self.assertEquals('Places',
-                      uploading.ConvertPackFilenameToTitle('places.pack'))
-
-  def testConvertPackFilenameToTitle_OnSimpleFilename(self):
     self.assertEquals('Foggy Places',
                       uploading.ConvertPackFilenameToTitle('foggy_places.pack'))
 
@@ -28,8 +24,8 @@ class UploadingTestCase(unittest.TestCase):
   def testMakeCommandForUploadingPackWithMissingExtension(self):
     try:
       filename_with_missing_csv = 'packs/country_capital_cryptos'
-      _ = uploading.MakeCommandForUploadingPackCsv('localhost:8080',
-                                                   filename_with_missing_csv)
+      uploading.MakeCommandForUploadingPackCsv('localhost:8080',
+                                               filename_with_missing_csv)
       self.fail('Expected an exception for missing csv extension.')
     except ValueError:
       pass # OK

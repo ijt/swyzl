@@ -1,7 +1,5 @@
 """Misc helper functions that do not depend on App Engine."""
 
-__author__ = 'issac.trotts@gmail.com'
-
 import random
 
 
