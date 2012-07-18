@@ -1,3 +1,5 @@
+"""This module enables bulk loading of individual puzzles."""
+
 from google.appengine.ext import bulkload
 
 

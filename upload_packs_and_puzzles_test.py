@@ -1,6 +1,8 @@
 #!/usr/bin/env python
+
 import upload_packs_and_puzzles as uploading
 import unittest
+
 
 class UploadingTestCase(unittest.TestCase):
   def testConvertPackFilenameToTitle_OnEmptyCase(self):
@@ -45,6 +47,7 @@ class UploadingTestCase(unittest.TestCase):
                 '--kind=Puzzle '
                 '--filename packs/presidents.csv')
     self.assertEquals(expected, cmd)
+
 
 if __name__ == '__main__':
   unittest.main()

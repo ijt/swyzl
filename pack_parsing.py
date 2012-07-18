@@ -38,44 +38,33 @@ def ParseString(string):
 
 
 def EscapeCsvField(field):
+    """
+    Replace double quotes with pairs of them.
+
+    @param field: CSV field that may need escaping
+    @type  field: str 
+    """
     if field.find(',') != -1 or field.startswith('"'):
-        field = field.replace('"', '""')    # Replace double quotes with pairs of them.
+        field = field.replace('"', '""')
         field = '"%s"' % field
     return field
 
 
 def ConvertPuzzleToCsvLine(puzzle, pack_title):
-    """Convert a dict representing a puzzle to a string of CSV."""
+    """
+    Convert a dict representing a puzzle to a string of CSV.
+    
+    @param puzzle: puzzle to be converted
+    @type  puzzle: dict
+    @param pack_title: title of the puzzle's pack
+    @type  pack_title: str
+    """
     puzzle = puzzle.copy()
     puzzle.update(pack_title=pack_title)
     for key, val in puzzle.iteritems():
         puzzle[key] = EscapeCsvField(val)
     return ('%(name)s,%(cipher_text)s,%(solution_text)s,'
                     '%(short_clue)s,%(pack_title)s' % puzzle)
-
-
-def SwapSolutionAndCipher(puzzle):
-    """
-    Interchange the solution_text and cipher_text fields of a puzzle dict.
-
-    This function was written to help with a file where ijt accidentally
-    transposed the solution and cipher lines.
-    """
-    puzzle = puzzle.copy()
-    old_soln = puzzle['solution_text']
-    puzzle['solution_text'] = puzzle['cipher_text']
-    puzzle['cipher_text'] = old_soln
-    return puzzle
-
-
-def PutPuzzlesIntoPackFormat(puzzles):
-    lines = []
-    for puzzle in puzzles:
-        lines.append(puzzle['name'])
-        lines.append(puzzle['short_clue'])
-        lines.append(puzzle['solution_text'])
-        lines.append(puzzle['cipher_text'])
-    return lines
 
 
 def ConvertPackFileToCsv(filename, title):
@@ -86,6 +75,11 @@ def ConvertPackFileToCsv(filename, title):
     ConvertPackFileToCsv('presidents.pack', pack_name='Presidential Cryptos')
     will generate a new file called presidents.csv suitable for bulk uploading
     to the server.
+
+    @param filename: pack file path
+    @type  filename: str
+    @param title: title of the pack
+    @type  title: str
     """
     puzzles = ParseString(open(filename).read())
     lines = [ConvertPuzzleToCsvLine(p, title) for p in puzzles]

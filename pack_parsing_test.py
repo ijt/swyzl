@@ -110,17 +110,6 @@ class ParsePuzzlePackTestCase(unittest.TestCase):
   def testEscapeCsvFieldOnStringContainingCommas(self):
     self.assertEqual('"a,b, c"', pack_parsing.EscapeCsvField('a,b, c'))
 
-  def testSwapSolutionAndCipher(self):
-    puzzle_frag = {'solution_text': 'cipher_oops_haha',
-                   'cipher_text': 'soln_oops_haha'}
-    puzzle2 = pack_parsing.SwapSolutionAndCipher(puzzle_frag)
-    self.assertEqual('soln_oops_haha', puzzle2['solution_text'])
-    self.assertEqual('cipher_oops_haha', puzzle2['cipher_text'])
-
-  def testPutPuzzlesIntoPackFormat(self):
-    pack_lines = pack_parsing.PutPuzzlesIntoPackFormat([])
-    self.assertEqual([], pack_lines)
-
 
 class TestCaseWithFakePuzzle(unittest.TestCase):
   def setUp(self):
@@ -128,10 +117,6 @@ class TestCaseWithFakePuzzle(unittest.TestCase):
                    'short_clue': 'Clue',
                    'solution_text': 'Soln',
                    'cipher_text': 'Cipher'}
-
-  def testPutPuzzlesIntoPackFormat(self):
-    pack_lines = pack_parsing.PutPuzzlesIntoPackFormat([self.puzzle])
-    self.assertEqual(['Name', 'Clue', 'Soln', 'Cipher'], pack_lines)
 
   def testConvertPuzzleToCsvLine(self):
     csv = pack_parsing.ConvertPuzzleToCsvLine(puzzle=self.puzzle,
