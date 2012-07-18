@@ -3,11 +3,9 @@
 """This module handles most HTTP requests for swyzl."""
 
 import os
-import re
 
 import wsgiref.handlers
 
-from django.utils import simplejson
 from google.appengine.api import users
 from google.appengine.ext import db
 from google.appengine.ext import webapp

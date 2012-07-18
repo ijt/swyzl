@@ -1,19 +1,32 @@
 #!/usr/bin/env python
 
+"""Functions to process packs of puzzles"""
+
 import re
 import utils
 
 
 def EnsurePeriod(s):
-    """Make sure a string ends with a period."""
-    if s.endswith('.'):
-        return s
-    else:
-        return s + '.'
+    """
+    Make a version of the given string that ends with a period.
+    
+    @param s: string input
+    @type  s: str
+    @return: a copy of s with a '.' appended if s doesn't end with a '.'
+    @rtype: str
+    """
+    return s if s.endswith('.') else s
 
 
 def ParseString(string):
-    """Extract puzzles from a string."""
+    """
+    Extract puzzles from a string containing the contents of a CSV file
+    
+    @param string: CSV formatted text
+    @type  string: str
+    @return: puzzle info dicts
+    @rtype: list of dicts
+    """
     lines = string.split('\n')
     comment_rx = re.compile('#.*')
     lines = [comment_rx.sub('', line) for line in lines]    # remove comments
