@@ -1,10 +1,9 @@
 #!/usr/bin/env python
 
-"""This module handles all HTTP requests for swyzl."""
+"""This module handles most HTTP requests for swyzl."""
 
 import os
 import re
-import urllib
 
 import wsgiref.handlers
 
@@ -26,13 +25,12 @@ class FakePuzzle(object):
         self.solution_text = 'B'
         self.key = 'puzzle_test'
 
-FAKE_PUZZLE = FakePuzzle()
-
 
 class PuzzleViewer(object):
     """HTML renderer for puzzles"""
     def ShowPuzzle(self, intro, title, puzzle, request, response):
-        """Render a puzzle UI to the HTTP response.
+        """
+        Render a puzzle UI to the HTTP response.
         
         @param intro: introduction for the puzzle
         @type  intro: str
@@ -41,58 +39,19 @@ class PuzzleViewer(object):
         @param puzzle: the puzzle to be shown
         @type  puzzle: swyzl_models.Puzzle
         @param request: HTTP request
-        @type  request: AppEngine request
+        @type  request: google.appengine.ext.webapp.Request
         """
         cipher_words = puzzle.cipher_text.split(' ')
         word_htmls = utils.GenerateWordHtmls(cipher_words)
         params = {'puzzle': puzzle, 'word_htmls': word_htmls, 'title': title,
             'intro': intro}
-        WriteTemplate(request, response, 'puzzle.html', params)
+        WriteTemplate(response, 'puzzle.html', params)
 
 
 def GetDefaultPuzzle():
     """Return the first entered puzzle, or None if there is none."""
     puzzles = models.Puzzle.all().fetch(1)
     return puzzles and puzzles[0] or None
-
-
-def SubmitNewPuzzle(clear_text, map_as_string, tags_string, short_clue):
-    """Save a puzzle to the db.
-
-    @param clear_text: url encoded secret message.
-    @type  clear_text: str
-    @param map_as_string: like "ABCD" to map A to B and C to D.
-    @type  map_as_string: str
-    @param tags_string: such as 'first tag,second tag'
-    @type  tags_string: str
-    @param short_clue: such as 'A is B'
-    @type  short_clue: str
-    """
-    encoding_map = utils.ConvertStringToEncodingMap(map_as_string)
-    clear_text = urllib.unquote(clear_text)
-    cipher_text = utils.Encrypt(clear_text, encoding_map)
-    utils.CheckPuzzle(clear_text, cipher_text)
-
-    puzzle = models.Puzzle()
-    puzzle.cipher_text = cipher_text
-    puzzle.solution_text = clear_text
-    puzzle.author = users.get_current_user()
-    puzzle.short_clue = short_clue
-    puzzle.put()
-
-    # Add tags
-    tag_texts = set(t.strip().lower() for t in tags_string.split(','))
-    tag_texts = [t or "untagged" for t in tag_texts]
-    for tag_text in tag_texts:
-        tag_in_db = models.Tag.gql('WHERE text = :1', tag_text).get()
-        if tag_in_db:
-            tag_in_db.num_times_used += 1
-            tag_in_db.puzzles.append(puzzle.key())
-        else:
-            # Create a new tag
-            tag_in_db = models.Tag(text=tag_text, num_times_used=1,
-                                   puzzles=[puzzle.key()])
-        tag_in_db.put()
 
 
 def UpdatePacksInMemcache():
@@ -114,7 +73,8 @@ class MainPage(webapp.RequestHandler):
     """Handler for /"""
 
     def GetUserInfo(self):
-        """Get the current user if any and make a link to login or logout.
+        """
+        Get the current user if any and make a link to login or logout.
 
         @return: (user, url, url_link_text)
         @rtype: (google.appengine.api.users.User, str, str)
@@ -146,7 +106,7 @@ class MainPage(webapp.RequestHandler):
             'packs': packs,
             'user': user
         }
-        WriteTemplate(self.request, self.response, 'home.html', params)
+        WriteTemplate(self.response, 'home.html', params)
 
 
 class AboutPage(webapp.RequestHandler):
@@ -154,7 +114,7 @@ class AboutPage(webapp.RequestHandler):
 
     def get(self):
         """Handle an HTTP GET request."""
-        WriteTemplate(self.request, self.response, 'about.html', {})
+        WriteTemplate(self.response, 'about.html', {})
 
 
 class TipsPage(webapp.RequestHandler):
@@ -162,15 +122,24 @@ class TipsPage(webapp.RequestHandler):
 
     def get(self):
         """Handle an HTTP GET request."""
-        WriteTemplate(self.request, self.response, 'tips.html', {})
+        WriteTemplate(self.response, 'tips.html', {})
 
 
 def GetInfoForUser(user):
+    """
+    Get app-specific information for a given user.
+
+    @param user: the user to query
+    @type  user: google.appengine.api.users.User
+    """
     return models.UserInfo.gql('WHERE user = :1', user).get()
 
 
 class MakePuzzleUi(webapp.RequestHandler):
+    """Handler for /make_puzzle_ui"""
+
     def post(self):
+        """Handle a POST request."""
         puzzle_text = self.request.get('content')
         words = re.compile(r'\s+').split(puzzle_text)
         htmls = utils.GenerateWordHtmls(words)
@@ -181,13 +150,29 @@ class MakePuzzleUi(webapp.RequestHandler):
         self.response.out.write(json)
 
 
-def MakePuzzleTitleForDisplay(puzzle):
-    pack = models.GetPackForPuzzle(puzzle)
-    return '%s, Puzzle %s' % (pack.title, puzzle.name)
+def MakePuzzleTitleForDisplay(p):
+    """
+    Create a display title for a given puzzle.
+
+    @param p: puzzle
+    @type  p: swyzl_models.Puzzle
+    """
+    pack = models.GetPackForPuzzle(p)
+    return '%s, Puzzle %s' % (pack.title, p.name)
 
 
 class PlayPuzzle(webapp.RequestHandler):
+    """Handler for /puzzle/x/y"""
+
     def get(self, book_index, puzzle_index):
+        """
+        Handle a GET request.
+        
+        @param book_index: puzzle book index
+        @type  book_index: str
+        @param puzzle_index: index of puzzle within book
+        @type  puzzle_index: str
+        """
         pack = models.GetPack(index=book_index)
         puzzle = models.GetPuzzle(pack_title=pack.title, name=puzzle_index)
         if puzzle:
@@ -198,39 +183,22 @@ class PlayPuzzle(webapp.RequestHandler):
             self.response.out.write('Puzzle not found!')
 
 
-class PuzzleTest(webapp.RequestHandler):
-    def get(self):
-        puzzle_viewer.ShowPuzzle('Easy Puzzle', FAKE_PUZZLE, self.request,
-                                 self.response)
-
-
-class SubmitNewPuzzleHandler(webapp.RequestHandler):
-    def get(self):
-        try:
-            clear_text = self.request.get('message').upper()
-            map_as_string = self.request.get('encoding_map').upper()
-            tags_string = self.request.get('tags').upper()
-            short_clue = self.request.get('short_clue')
-            SubmitNewPuzzle(clear_text, map_as_string, tags_string, short_clue)
-        except ValueError, e:
-            self.response.out.write(str(e))
-
-
-class Encrypt(webapp.RequestHandler):
-    def get(self):
-        message = urllib.unquote(self.request.get('message'))
-        self.response.headers['Content-Type'] = 'text/plain'
-        letter_map = utils.MakeRandomLetterMap()
-        self.response.out.write(utils.Encrypt(message=message,
-                                              letter_map=letter_map))
-
-
 class DoneWithPuzzle(webapp.RequestHandler):
+    """Handler for /done_with_puzzle"""
+
     def get(self):
+        """
+        Handle a GET request. The request is expected to have query parameters
+
+            puzzle_id: index of puzzle being solved
+            solution: string containing the user's guess at the puzzle solution
+
+        The response is either "Yes!" if the solution is correct, or
+        "Try again." if it is not.
+        """
         puzzle_id = self.request.get('puzzle_id')
         user_solution = self.request.get('solution').upper()
-        puzzle = (FAKE_PUZZLE if puzzle_id == 'puzzle_test'
-                  else db.get(puzzle_id))
+        puzzle = db.get(puzzle_id)
         # Remove spaces since the user solution also has its spaces removed.
         # Also remove punctuation.
         real_solution = ''.join(c for c in puzzle.solution_text if c.isalpha())
@@ -247,36 +215,27 @@ class DoneWithPuzzle(webapp.RequestHandler):
             self.response.out.write('Try again.')
 
 
-class BuyNowExperiment(webapp.RequestHandler):
-    def get(self):
-        WriteTemplate(self.request, self.response, 'bn.html', {})
-
-
 class NotFound(webapp.RequestHandler):
+    """Handler for unofficial URLs"""
+
     def get(self):
+        """Handle a GET request."""
         self.response.out.write("There's nothing to see here. How 'bout a "
                                 "<a href='/'>puzzle</a>?")
 
 
-class ClearPuzzles(webapp.RequestHandler):
-    def get(self):
-        puzzles = models.Puzzle.all().fetch(10000)
-        for puzzle in puzzles:
-            puzzle.delete()
-        self.response.out.write('Deleted %s puzzles.' % len(puzzles))
-
-
-class ClearPacks(webapp.RequestHandler):
-    def get(self):
-        packs = models.PackOfPuzzles.all().fetch(10000)
-        for pack in packs:
-            pack.delete()
-        self.response.out.write('Deleted %s packs.' % len(packs))
-
-
-def WriteTemplate(request, response, template_name, params,
-                  mime_type='text/html'):
-    '''Shows a template with some parameters'''
+def WriteTemplate(response, template_name, params, mime_type='text/html'):
+    '''
+    Fill out a web page template with some parameters and send it as the
+    response.
+    
+    @param response: HTTP response
+    @type  response: google.appengine.ext.webapp.Response
+    @type  template_name: str
+    @param params: parameters for the template
+    @type params: dict from string to any kind of object
+    @type mime_type: str
+    '''
     path = os.path.join(os.path.dirname(__file__), 'templates/%s' %
                         template_name)
     response.headers['Content-Type'] = mime_type
@@ -286,18 +245,10 @@ def WriteTemplate(request, response, template_name, params,
 urls_to_handlers = [('/', MainPage),
                     ('/update', UpdatePacksInMemcacheHandler),
                     ('/about', AboutPage),
-                    ('/buynow', BuyNowExperiment),
                     ('/done_with_puzzle', DoneWithPuzzle),
-                    ('/encrypt', Encrypt),
-                    ('/make_puzzle_ui', MakePuzzleUi),    # makes a puzzle ui
+                    ('/make_puzzle_ui', MakePuzzleUi),
                     ('/puzzle/(\d+)/(\d+)', PlayPuzzle),
-                    ('/puzzle_test', PuzzleTest),
                     ('/tips', TipsPage),
-
-                    # Admin:
-                    ('/clear_puzzles', ClearPuzzles),
-                    ('/clear_packs', ClearPacks),
-
                     ('.*', NotFound)]
 
 application = webapp.WSGIApplication(urls_to_handlers, debug=True)
@@ -305,6 +256,7 @@ puzzle_viewer = PuzzleViewer()
 
 
 def Main():
+    """Run the web application."""
     wsgiref.handlers.CGIHandler().run(application)
 
 
