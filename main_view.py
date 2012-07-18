@@ -135,21 +135,6 @@ def GetInfoForUser(user):
     return models.UserInfo.gql('WHERE user = :1', user).get()
 
 
-class MakePuzzleUi(webapp.RequestHandler):
-    """Handler for /make_puzzle_ui"""
-
-    def post(self):
-        """Handle a POST request."""
-        puzzle_text = self.request.get('content')
-        words = re.compile(r'\s+').split(puzzle_text)
-        htmls = utils.GenerateWordHtmls(words)
-        html = '\n'.join(htmls) + '<hr />' + utils.GenerateAlphabetUi()
-        encoding_map = utils.MakeRandomLetterMapForLettersIn(puzzle_text)
-        json = simplejson.dumps(dict(html=html, encodingMap=encoding_map))
-        self.response.headers['Content-Type'] = 'text/html'
-        self.response.out.write(json)
-
-
 def MakePuzzleTitleForDisplay(p):
     """
     Create a display title for a given puzzle.
@@ -246,7 +231,6 @@ urls_to_handlers = [('/', MainPage),
                     ('/update', UpdatePacksInMemcacheHandler),
                     ('/about', AboutPage),
                     ('/done_with_puzzle', DoneWithPuzzle),
-                    ('/make_puzzle_ui', MakePuzzleUi),
                     ('/puzzle/(\d+)/(\d+)', PlayPuzzle),
                     ('/tips', TipsPage),
                     ('.*', NotFound)]

@@ -34,35 +34,57 @@ def MakeRandomLetterMapForLettersIn(message):
 
 
 def MakeEncryptionMap(solution_text, cipher_text):
-    """Makes an encryption map from a solution and cipher."""
+    """Make an encryption map from a solution and cipher-text.
+    
+    @param solution_text: the hidden message
+    @type  solution_text: str
+    @param cipher_text: the encoded message that will be presented
+    @type  cipher_text: str
+    @return: mapping from solution characters to cipher-text characters
+    @rtype: dict
+    """
     if len(solution_text) != len(cipher_text):
         raise ValueError('Solution and cipher lengths do not match')
     result = {}
-    for i in    xrange(len(solution_text)):
+    for i in xrange(len(solution_text)):
         s = solution_text[i]
         c = cipher_text[i]
         if result.has_key(s):
             if result[s] != c:
                 raise ValueError('Character %s maps to both %s and %s.' %
-                                                 (s, result[s], c))
+                                 (s, result[s], c))
         else:
             if s.isalpha():
                 result[s] = c
             else:
                 if s != c:
-                    raise ValueError("Non-letter %s mapped to %s. That's not allowed." %
-                                                     (s, c))
+                    msg = ("Non-letter %s mapped to %s. That's not allowed." %
+                           (s, c))
+                    raise ValueError(msg)
     return result
 
 
 def CheckPuzzle(solution_text, cipher_text):
-    """Makes sure that the solution and cipher imply a 1-1 map."""
+    """
+    Check that the solution and cipher imply a 1-1 map.
+    
+    @raise ValueError: if there is no 1-1 mapping between solution and
+      cipher-text
+    """
     MakeEncryptionMap(solution_text, cipher_text)
     MakeEncryptionMap(cipher_text, solution_text)
 
 
 def ConvertStringToEncodingMap(string):
-    """Converts strings like 'ABZX' to maps like {'A':'B', 'Z':'X'}."""
+    """
+    Convert strings like 'ABZX' to maps like {'A':'B', 'Z':'X'}.
+    
+    @param string: a packed map
+    @type  string: str
+    @return: mapping from even-indexed characters to the characters following
+      them
+    @rtype: dict
+    """
     n = len(string) / 2
     evens = [string[2 * i] for i in xrange(n)]
     odds = [string[2 * i + 1] for i in xrange(n)]
@@ -70,6 +92,16 @@ def ConvertStringToEncodingMap(string):
 
 
 def ListToTableRow(lst, klass=None):
+    """
+    Generate an HTML-formatted table row from a list.
+
+    @param lst: cells for the table
+    @type  lst: list
+    @param klass: class parameter fro the <td> tags
+    @type  klass: str
+    @return: HTML
+    @rtype: str
+    """
     class_part = klass and (' class="%s"' % klass) or ''
     td = '<td%s>' % class_part
     inner_part = ('</td>%s' % td).join(lst)
@@ -77,7 +109,15 @@ def ListToTableRow(lst, klass=None):
 
 
 def GenerateWordHtmls(cipher_words):
-    """Generates a list of html snippets to build a puzzle UI."""
+    """
+    Generate a list of HTML snippets to build a puzzle UI.  The HTML allows the
+    puzzle UI to reflow when the browser is resized horizontally.
+
+    @param cipher_words: encrypted words in the puzzle
+    @type  cipher_words: str
+    @return: HTML snippets
+    @rtype: list of str
+    """
     word_htmls = []
 
     # Generate one table per word.
