@@ -27,9 +27,12 @@ def ParseString(string):
     """
     lines = string.split('\n')
     comment_rx = re.compile('#.*')
-    lines = [comment_rx.sub('', line) for line in lines]    # remove comments
-    lines = [line.strip() for line in lines]    # remove whitespace
-    lines = [line for line in lines if line]    # remove blank lines
+    # Strip comments.
+    lines = [comment_rx.sub('', line) for line in lines]
+    # Remove whitespace.
+    lines = [line.strip() for line in lines]
+    # Remove blank lines.
+    lines = [line for line in lines if line]
     result = []
     for i in xrange(len(lines) / 4):
         i4 = i * 4
@@ -43,7 +46,8 @@ def ParseString(string):
         try:
             utils.CheckPuzzle(puzzle['solution_text'], puzzle['cipher_text'])
         except ValueError, e:
-            raise ValueError('Error on puzzle %s: %s' % (puzzle['name'], str(e)))
+            msg = 'Error on puzzle %s: %s' % (puzzle['name'], str(e))
+            raise ValueError(msg)
         result.append(puzzle)
     return result
 
@@ -98,4 +102,3 @@ def ConvertPackFileToCsv(filename, title):
     outfile = open(csv_filename, 'w')
     outfile.write('\n'.join(lines))
     outfile.close()
-

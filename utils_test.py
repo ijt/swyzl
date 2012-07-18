@@ -15,8 +15,10 @@ class TestUtils(unittest.TestCase):
 
         self.assertDictEqual({'a': 'b'}, utils.MakeEncryptionMap('a', 'b'))
         self.assertDictEqual({'a': 'b'}, utils.MakeEncryptionMap('aa', 'bb'))
-        self.assertDictEqual({'a': 'b', 'b': 'c'}, utils.MakeEncryptionMap('ab', 'bc'))
-        self.assertDictEqual({'a': 'b'}, utils.MakeEncryptionMap("a.,'", "b.,'"))
+        self.assertDictEqual({'a': 'b', 'b': 'c'},
+                             utils.MakeEncryptionMap('ab', 'bc'))
+        self.assertDictEqual({'a': 'b'},
+                             utils.MakeEncryptionMap("a.,'", "b.,'"))
         self.assertRaises(ValueError, utils.MakeEncryptionMap, 'aa', 'bc')
         self.assertRaises(ValueError, utils.MakeEncryptionMap, 'a', 'bc')
         self.assertRaises(ValueError, utils.MakeEncryptionMap, '.', 'bq')
@@ -59,11 +61,12 @@ class TestUtils(unittest.TestCase):
 
     def testConvertStringToEncodingMap(self):
         self.assertDictEqual({}, utils.ConvertStringToEncodingMap(''))
-        self.assertDictEqual({'A': 'B'}, utils.ConvertStringToEncodingMap('AB'))
+        self.assertDictEqual({'A': 'B'},
+                             utils.ConvertStringToEncodingMap('AB'))
         self.assertDictEqual({'A': 'B', 'D': 'C'},
-                                                 utils.ConvertStringToEncodingMap('ABDC'))
+                             utils.ConvertStringToEncodingMap('ABDC'))
         self.assertDictEqual({'P': 'Z', 'A': 'B', 'D': 'C'},
-                                                 utils.ConvertStringToEncodingMap('PZABDC'))
+                             utils.ConvertStringToEncodingMap('PZABDC'))
 
     def testGetLetters(self):
         self.assertEquals(set(), utils.GetLetters(''))
@@ -71,14 +74,15 @@ class TestUtils(unittest.TestCase):
         self.assertEquals(set(), utils.GetLetters(' !,.<>12341@#$!@#$^%^&()'))
         self.assertEquals(set(['A']), utils.GetLetters('A'))
         self.assertEquals(set(['A', 'B']), utils.GetLetters('ABA'))
-        self.assertEquals(set(['D', 'P', 'Q', 'S']), utils.GetLetters('DPSD ,.DQS'))
+        self.assertEquals(set(['D', 'P', 'Q', 'S']),
+                          utils.GetLetters('DPSD ,.DQS'))
 
     def testGenerateWordHtmls_emptyCase(self):
         self.assertEqual([], utils.GenerateWordHtmls([]))
 
     def testGenerateWordHtmls_semiEmptyCase(self):
         expected = ['<table class="boxOnLetter"><tr><td></td></tr>'
-                                '<tr><td class="letter"></td></tr></table>']
+                    '<tr><td class="letter"></td></tr></table>']
         self.assertEqual(expected, utils.GenerateWordHtmls(['']))
 
     def testGenerateWordHtmls(self):
@@ -90,4 +94,4 @@ class TestUtils(unittest.TestCase):
 
 
 if __name__ == '__main__':
-        unittest.main()
+    unittest.main()

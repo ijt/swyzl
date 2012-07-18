@@ -129,4 +129,3 @@ def GetPack(index):
     @rtype: PackOfPuzzles
     """
     return PackOfPuzzles.gql('WHERE index = :index', index=int(index)).get()
-

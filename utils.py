@@ -49,7 +49,7 @@ def MakeEncryptionMap(solution_text, cipher_text):
     for i in xrange(len(solution_text)):
         s = solution_text[i]
         c = cipher_text[i]
-        if result.has_key(s):
+        if s in result:
             if result[s] != c:
                 raise ValueError('Character %s maps to both %s and %s.' %
                                  (s, result[s], c))
@@ -127,20 +127,22 @@ def GenerateWordHtmls(cipher_words):
         bot_row = []
         for char in word:
             if char.isalpha():
-                # The code char is part of the input tag's class. That way we can
-                # easily find all the input boxes for a given code character.
-                input_tag = ('<input id="box%s" class="SwyzlTextBox %s" maxlength="1" '
-                                         % (box_index, char))
-                # The size is set to 2 because setting it to 1 is supposed to not be
-                # well supported on all browsers.
-                callback = ("return onKeyDown('%s', event.keyCode || event.which, %i)" %
-                                        (char, box_index))
+                # The code char is part of the input tag's class. That way we
+                # can easily find all the input boxes for a given code
+                # character.
+                input_tag = ('<input id="box%s" class="SwyzlTextBox %s" '
+                             'maxlength="1" ' % (box_index, char))
+                # The size is set to 2 because setting it to 1 is supposed to
+                # not be well supported on all browsers.
+                callback = ("return onKeyDown('%s', event.keyCode || "
+                            "event.which, %i)" % (char, box_index))
                 input_tag += 'size="2" onkeyDown="%s">' % callback
                 top_row.append(input_tag)
                 bot_row.append(char)
                 box_index += 1
             else:
-                # Use the same CSS class as the text boxes to keep things lined up.
+                # Use the same CSS class as the text boxes to keep things lined
+                # up.
                 elt = '<span class="SwyzlTextBox noborder">%s</span>' % char
                 top_row.append(elt)
                 bot_row.append(elt)
@@ -150,4 +152,3 @@ def GenerateWordHtmls(cipher_words):
         word_html += '</table>'
         word_htmls.append(word_html)
     return word_htmls
-

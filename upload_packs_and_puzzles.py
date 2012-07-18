@@ -102,4 +102,3 @@ if __name__ == '__main__':
         print 'Example: ./upload_packs_and_puzzles.py swyzl.appspot.com'
         sys.exit(1)
         Main(hostname, pack_filenames=glob.glob('packs/*.pack'))
-
