@@ -1,51 +1,56 @@
 {% include "doctype" %}
 <html>
-<head>
-  {% include "head" %}  
-  <style>
-    div.pack { margin-top:1em; }
-    div#footer { margin-top:1em }
-    select {
-      margin-left:0.4em;
-      font-size:1.5em;
-      float:left;
-    }
-    unfloat.div { clear:both; }
-  </style>
-  <title>Swyzl</title>
-  <link rel="apple-touch-icon" href="/images/apple-touch-icon.png"/>
-</head>
-<body>
-  <h1>Swyzl</h1>
+    <head>
+        {% include "head" %}  
+        <style>
+            div.pack { margin-top:1em; }
+            div#footer { margin-top:1em }
+            select {
+                margin-left:0.4em;
+                font-size:1.5em;
+                float:left;
+            }
+            unfloat.div { clear:both; }
+        </style>
+        <title>Swyzl</title>
+        <link rel="apple-touch-icon" href="/images/apple-touch-icon.png"/>
+    </head>
+    <body>
+        <h1>Swyzl</h1>
 
-  <div id="introduction">
-    <h2>Introduction</h2>
-    Welcome to Julia's handmade cryptos, a.k.a. Swyzl! To learn about cryptograms and how to solve them, check out our <a href="tips">tips</a>.
-  </div>
+        <div id="introduction">
+            <h2>Introduction</h2>
+            Welcome to Julia's handmade cryptos, a.k.a. Swyzl! To learn about
+            cryptograms and how to solve them, check out our
+            <a href="tips">tips</a>.
+        </div>
 
-  <div id="pack_set">
-    <h2>Cryptograms</h2>
-    Choose one of the links to start a puzzle.
-    {% for pack in packs %}
-      <div class="pack">
-        <h3>{{ pack.title }}</h3>
-        {% for puzzle in pack.puzzles %}
-            <a href="{{ puzzle.relative_url }}">{{ puzzle.name }}</a>
-        {% endfor %}
-      </div>
-    {% endfor %}
-  </div>
+        <div id="pack_set">
+            <h2>Cryptograms</h2>
+            Choose one of the links to start a puzzle.
+            {% for pack in packs %}
+            <div class="pack">
+                <h3>{{ pack.title }}</h3>
+                {% for puzzle in pack.puzzles %}
+                <a href="{{ puzzle.relative_url }}">{{ puzzle.name }}</a>
+                {% endfor %}
+            </div>
+            {% endfor %}
+        </div>
 
-  <div id="footer"><a href="/about">Credits</a> | <a href="mailto:issac.trotts+swyzl@gmail.com">Feedback</a></div>
-  
-  <script type="text/javascript">{% include "utils.js" %}</script>
-  <script type="text/javascript">
-    function goToPuzzle(relativeUrl) {
-      if (relativeUrl) {
-        window.location = getBaseUrl(window.location) + relativeUrl;
-      }
-    }
-  </script>
+        <div id="footer">
+            <a href="/about">Credits</a>
+            |
+            <a href="mailto:issac.trotts+swyzl@gmail.com">Feedback</a>
+        </div>
 
-</body>
+        <script type="text/javascript">{% include "utils.js" %}</script>
+        <script type="text/javascript">
+            function goToPuzzle(relativeUrl) {
+                if (relativeUrl) {
+                    window.location = getBaseUrl(window.location) + relativeUrl;
+                }
+            }
+        </script>
+    </body>
 </html>

@@ -1,19 +1,12 @@
 body{
-	margin:20px;
+    width: 40em;
+    margin: 1em auto 2em auto;
 	background:#fff;
-    font:1em "Courier New", Courier, monospace;
+	font:1em "Courier New", Courier, monospace;
 }
-ul, p, h1, h2, h3, h4, h5{
-	margin:0;
-	padding:0;
-}
-h1 { text-align:center; font-size:3em; color:#6f7ea6; }
+ul, p, h1, h2, h3, h4, h5{ margin:0; padding:0; }
+h1 { font-size:3em; color:#6f7ea6; }
 h2 { font-size:2em; color:#d26f2c; font-weight:normal; margin-top:0.5em }
 ul, li { list-style:none; }
-th, td {
-    font-size: 1em;
-    vertical-align:top;
-}
-table {
-    border-collapse: collapse;
-}
+th, td { font-size: 1em; vertical-align:top; }
+table { border-collapse: collapse; }
