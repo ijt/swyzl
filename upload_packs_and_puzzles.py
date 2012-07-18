@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 """This script bulk-uploads packs and puzzles to a swyzl instance."""
 
 import glob
@@ -38,19 +36,19 @@ def ConvertPackFilenameToTitle(pack_filename):
 def MakeCommandForUploadingPackDescriptions(hostname):
     """
     Make a unix command to upload the pack descriptions CSV file.
-    
+
     @param hostname: where the packs will be uploaded
     @type  hostname: str
     """
     return ('bulkload_client.py --url=http://%s/load_pack_descriptions '
-                    '--kind=PackOfPuzzles '
-                    '--filename packs/pack_descriptions.csv' % hostname)
+            '--kind=PackOfPuzzles '
+            '--filename packs/pack_descriptions.csv' % hostname)
 
 
 def MakeCommandForUploadingPackCsv(hostname, pack_csv_filename):
     """
     Make a UNIX command to upload the puzzles for a pack.
-    
+
     @param hostname: where the packs will be uploaded
     @type  hostname: str
     @param pack_csv_filename: path to the CSV file containing the pack info
@@ -59,8 +57,8 @@ def MakeCommandForUploadingPackCsv(hostname, pack_csv_filename):
     if not pack_csv_filename.endswith('.csv'):
         raise ValueError('pack_csv_filename should end with .csv')
     return ('bulkload_client.py --url=http://%s/load_puzzles '
-                    '--kind=Puzzle '
-                    '--filename %s' % (hostname, pack_csv_filename))
+            '--kind=Puzzle '
+            '--filename %s' % (hostname, pack_csv_filename))
 
 
 def Main(hostname, pack_filenames):
@@ -103,5 +101,5 @@ if __name__ == '__main__':
         print 'Example: ./upload_packs_and_puzzles.py localhost:8080'
         print 'Example: ./upload_packs_and_puzzles.py swyzl.appspot.com'
         sys.exit(1)
-    Main(hostname, pack_filenames=glob.glob('packs/*.pack'))
+        Main(hostname, pack_filenames=glob.glob('packs/*.pack'))
 

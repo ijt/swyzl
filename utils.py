@@ -1,4 +1,4 @@
-"""Misc helper functions that do not depend on App Engine"""
+"""Functions that do not depend on App Engine"""
 
 import random
 
@@ -127,13 +127,12 @@ def GenerateWordHtmls(cipher_words):
         bot_row = []
         for char in word:
             if char.isalpha():
-                # The code char is part of the input tag's class.    That way we can
+                # The code char is part of the input tag's class. That way we can
                 # easily find all the input boxes for a given code character.
                 input_tag = ('<input id="box%s" class="SwyzlTextBox %s" maxlength="1" '
                                          % (box_index, char))
                 # The size is set to 2 because setting it to 1 is supposed to not be
-                # well supported on all browsers.    The onKeyPress callback is defined
-                # in the GWT code.
+                # well supported on all browsers.
                 callback = ("return onKeyDown('%s', event.keyCode || event.which, %i)" %
                                         (char, box_index))
                 input_tag += 'size="2" onkeyDown="%s">' % callback
@@ -151,11 +150,4 @@ def GenerateWordHtmls(cipher_words):
         word_html += '</table>'
         word_htmls.append(word_html)
     return word_htmls
-
-
-def GenerateAlphabetUi():
-    """Constucts HTML for the alphabet UI to keep track of mapped letters."""
-    html_lists = [GenerateWordHtmls(chr(x)) for x in range(ord('A'), ord('Z') + 1)]
-    htmls = [html for [html] in html_lists]
-    return '<div id="alphabet_div">%s</div>' % '\n'.join(htmls)
 

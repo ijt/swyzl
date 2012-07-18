@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 """AppEngine data store models for Swyzl data, and operations on the models"""
 
 from google.appengine.ext import db

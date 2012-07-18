@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 """Functions to process packs of puzzles"""
 
 import re

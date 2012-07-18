@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 import upload_packs_and_puzzles as uploading
 import unittest
 

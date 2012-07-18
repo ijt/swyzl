@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 import pack_parsing
 import unittest
 

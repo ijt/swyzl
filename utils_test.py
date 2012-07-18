@@ -88,14 +88,6 @@ class TestUtils(unittest.TestCase):
             self.assertTrue('</table>' in part)
             self.assertTrue('>b<' in part)
 
-    def testGenerateAlphabetUi(self):
-        import re
-        html = utils.GenerateAlphabetUi()
-        self.assertEqual(26, len(re.compile('<table').findall(html)))
-        self.assertEqual(26, len(re.compile('</table>').findall(html)))
-        for letter in map(chr, range(ord('A'), ord('Z') + 1)):
-            self.assertTrue(('>%s<' % letter) in html)
-
 
 if __name__ == '__main__':
         unittest.main()
