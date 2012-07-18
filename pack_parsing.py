@@ -7,7 +7,7 @@ import utils
 def EnsurePeriod(s):
     """
     Make a version of the given string that ends with a period.
-    
+
     @param s: string input
     @type  s: str
     @return: a copy of s with a '.' appended if s doesn't end with a '.'
@@ -19,7 +19,7 @@ def EnsurePeriod(s):
 def ParseString(string):
     """
     Extract puzzles from a string containing the contents of a CSV file
-    
+
     @param string: CSV formatted text
     @type  string: str
     @return: puzzle info dicts
@@ -53,7 +53,7 @@ def EscapeCsvField(field):
     Replace double quotes with pairs of them.
 
     @param field: CSV field that may need escaping
-    @type  field: str 
+    @type  field: str
     """
     if field.find(',') != -1 or field.startswith('"'):
         field = field.replace('"', '""')
@@ -64,7 +64,7 @@ def EscapeCsvField(field):
 def ConvertPuzzleToCsvLine(puzzle, pack_title):
     """
     Convert a dict representing a puzzle to a string of CSV.
-    
+
     @param puzzle: puzzle to be converted
     @type  puzzle: dict
     @param pack_title: title of the puzzle's pack

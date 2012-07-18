@@ -6,7 +6,7 @@ import random
 def MakeRandomLetterMap():
     """
     Make a one-to-one map from every capital letter to every other.
-    
+
     @return: a mapping with a random permutation of letters
     @rtype: dict
     """
@@ -23,7 +23,7 @@ def GetLetters(string):
 
 def MakeRandomLetterMapForLettersIn(message):
     """Make a map from letters in a message to other letters.
-    
+
     @param message: text to use as the domain for the map
     @type  message: str
     @return: map from the message letters to randomly chosen other letters
@@ -35,7 +35,7 @@ def MakeRandomLetterMapForLettersIn(message):
 
 def MakeEncryptionMap(solution_text, cipher_text):
     """Make an encryption map from a solution and cipher-text.
-    
+
     @param solution_text: the hidden message
     @type  solution_text: str
     @param cipher_text: the encoded message that will be presented
@@ -67,7 +67,7 @@ def MakeEncryptionMap(solution_text, cipher_text):
 def CheckPuzzle(solution_text, cipher_text):
     """
     Check that the solution and cipher imply a 1-1 map.
-    
+
     @raise ValueError: if there is no 1-1 mapping between solution and
       cipher-text
     """
@@ -78,7 +78,7 @@ def CheckPuzzle(solution_text, cipher_text):
 def ConvertStringToEncodingMap(string):
     """
     Convert strings like 'ABZX' to maps like {'A':'B', 'Z':'X'}.
-    
+
     @param string: a packed map
     @type  string: str
     @return: mapping from even-indexed characters to the characters following

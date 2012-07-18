@@ -92,7 +92,7 @@ def GetOrphanPuzzles():
 def GetPackForPuzzle(puzzle):
     """
     Get the PackOfPuzzles containing a given Puzzle.
-    
+
     @param puzzle: puzzle for which to find a pack
     @type  puzzle: Puzzle
     @rtype: list of PackOfPuzzles
@@ -123,7 +123,7 @@ def GetPuzzle(pack_title, name):
 def GetPack(index):
     """
     Get a Pack for a given 1-based index.
-    
+
     @param index: index of the pack
     @type  index: int
     @rtype: PackOfPuzzles

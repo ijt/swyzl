@@ -29,7 +29,7 @@ class PuzzleViewer(object):
     def ShowPuzzle(self, intro, title, puzzle, request, response):
         """
         Render a puzzle UI to the HTTP response.
-        
+
         @param intro: introduction for the puzzle
         @type  intro: str
         @param title: title for the puzzle
@@ -150,7 +150,7 @@ class PlayPuzzle(webapp.RequestHandler):
     def get(self, book_index, puzzle_index):
         """
         Handle a GET request.
-        
+
         @param book_index: puzzle book index
         @type  book_index: str
         @param puzzle_index: index of puzzle within book
@@ -211,7 +211,7 @@ def WriteTemplate(response, template_name, params, mime_type='text/html'):
     '''
     Fill out a web page template with some parameters and send it as the
     response.
-    
+
     @param response: HTTP response
     @type  response: google.appengine.ext.webapp.Response
     @type  template_name: str
